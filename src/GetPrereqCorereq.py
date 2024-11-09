@@ -74,7 +74,11 @@ def course_code(parent_text):
             return parent_code
 
 def remove_punctuation(word):
-    return re.sub(r'[^a-zA-Z0-9]', '', word)
+    if "." in word:
+        end=True
+    else:
+        end=False
+    return (re.sub(r'[^a-zA-Z0-9]', '', word), end)
 
 def course_codes_list(prereq_string):
     '''
@@ -89,21 +93,23 @@ def course_codes_list(prereq_string):
     '''
     prereq_list=[]
     prereq_or=prereq_string.split(";") #take our list of prereqs and separate them by the ";"
-
+    prereq_or=(''.join(prereq_or)).split("and")
     coursename_stack=Stack() #have a stack of coursenames renewed for each group of sibling courses
     for siblings_line in prereq_or: 
         siblings=[]
         siblings_line=siblings_line.split()
         course_name=""
         for word in siblings_line:
-            word=remove_punctuation(word)
-           # print("HERE IS MYWORD", word)
+            word, end_flag=remove_punctuation(word)
+
+            if end_flag:
+                   return prereq_list 
+        
             if word.isupper(): #do this--we can't simply say uppercase => course code; some courses are two words, ie "MA PH"
                 if course_name:
                     course_name+=" "+word
                 else:
                     course_name+=word
-
                 coursename_stack.push(course_name)
 
             if (word.isdigit()):
@@ -113,8 +119,9 @@ def course_codes_list(prereq_string):
                 course_num=word #duh, because word is a digit.
 
                 course_code = coursename_stack.peektop()+" "+course_num #peek to the top of the stack!
-                siblings.append(course_code)
-        prereq_list.append(siblings)     
+                siblings.append(course_code)    
+                
+        prereq_list.append(siblings)
     return prereq_list       
         
 
@@ -123,6 +130,8 @@ def prereqs(parent_text):
     for i in range(len(parent_text)):
         if parent_text[i] == "Prerequisite:" or parent_text[i] == "Prerequisites:":
             prereq_idx = i  #index for the word "Prerequisite(s)"
+        else:
+            prereq_idx = len(parent_text)-1
     prereq_text_block=' '.join(parent_text[1+prereq_idx:])
     
     if "Corequesite" in prereq_text_block or "Corerequisites" in prereq_text_block: #if there are coreqs, get rid of them
@@ -135,17 +144,7 @@ def prereqs(parent_text):
     prereq_list= course_codes_list(prereq_text_block)
     return(prereq_list)
               
-coursetext= '''CMPUT 206 - Introduction to Digital Image Processing
 
-
-View Available Classes
-
-
-
-3 units (fi 6)(EITHER, 3-0-3)
-An introduction to basic digital image processing theory, and the tools that make advanced image manipulation possible for ordinary users. Image processing is important in many applications: editing and processing photographs, special effects for movies, drawing animated characters starting with photographs, analyzing and enhancing remote imagery, and detecting suspects from surveillance cameras. Image processing building blocks and fundamental algorithms of image processing operations are introduced using Python libraries. 
-Prerequisites: one of CMPUT 101, 174, or 274; one of MATH 100, 114, 117, 134, 144, or 154; and one of MA PH 151, 161, 181, 235, 265, SCI 151, or MATH 181. Corequesite: Blah blah blah 
-'''
 
 def getPrereqs(coursetext):
         
@@ -157,4 +156,26 @@ def getPrereqs(coursetext):
     prereqlist=(prereqs(coursetext))
     return code, prereqlist
 
-getPrereqs(coursetext)
+
+ex1= '''CMPUT 204 - Algorithms I
+3 units (fi 6)(EITHER, 3-1S-0)
+Faculty of Science
+
+The first of two courses on algorithm design and analysis, with emphasis on fundamentals of searching, sorting, and graph algorithms. Examples include divide and conquer, dynamic programming, greedy methods, backtracking, and local search methods, together with analysis techniques to estimate program efficiency. Prerequisites: CMPUT 175 or 275, and CMPUT 272; and one of MATH 100, 114, 117, 134, 144, or 154.'''
+ex2='''CMPUT 206 - Introduction to Digital Image Processing
+3 units (fi 6)(EITHER, 3-0-3)
+Faculty of Science
+
+An introduction to basic digital image processing theory, and the tools that make advanced 
+image manipulation possible for ordinary users. 
+Image processing is important in many applications: editing and processing photographs, special effects for movies, drawing animated characters starting with photographs, analyzing and enhancing remote imagery, and detecting suspects from surveillance cameras. 
+Image processing building blocks and fundamental algorithms of image processing operations are introduced using Python libraries. 
+Prerequisites: one of CMPUT 101, 174, or 274; one of MATH 100, 114, 117, 134, 144, or 154; and one of STAT 151, 161, 181, 235, 265, SCI 151, or MATH 181.'''
+ex3='''CMPUT 275 - Introduction to Tangible Computing II
+3 units (fi 6)(EITHER, 0-6L-0)
+Faculty of Science
+
+This is part 2 of a 2 sequence intensive introduction to Computing Science. Part 2 expands to add object-oriented programming, with C++, and more complex algorithms and data structures such as shortest paths in graphs; divide and conquer and dynamic programming; client-server style computing; and recursion. Prerequisite: CMPUT 274. Note: this course is taught in studio-style, where lectures and labs are blended into 3 hour sessions, twice a week. Enrollment is limited by the capacity of the combined lecture/lab facilities. Credit cannot be obtained for CMPUT 275 if one already has credit for any of CMPUT 174, 175, or 201, except with permission of the Department.'''
+ex4='''OLIVIA 101 - skdbfksdbna nasjwjsnx ewud'''
+output= getPrereqs(ex4)
+print(output)
