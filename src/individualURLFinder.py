@@ -16,21 +16,28 @@ BASEURL = "https://apps.ualberta.ca/catalogue/course"
 COURSELIST = []
 
 def createLayer(givenT):
+    if givenT[1] == None:
+        return
+    if len(givenT[1]) == 0:
+        return
+
     courseName = givenT[0] #original course
     prereqs = givenT[1]
     print("Create Layer test")
 
 
-    # if courseName in COURSELIST:
-    #     return
+    if courseName in COURSELIST:
+        return
 
     course = Course(courseName, prereqs)
     COURSELIST.append(course)
 
-    for i in range(len(course.prereqs)):
+    for i in range(len(course.prereqs)):    # looping through all ANDs
         if len(course.prereqs[i]) > 1:
-            for j in range(len(course.prereqs[i])):
-                paragraph = isolateParagraph(nextURL(course.prereqs[i][j]))
+            for j in range(len(course.prereqs[i])):    # looping through all ORs
+                paragraph = isolateParagraph(getContent(nextURL(course.prereqs[i][j])))
+
+                print(paragraph)
                 prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
                 createLayer(prereqsList)
 
@@ -79,20 +86,25 @@ def nextURL(classCode: str) -> str:
     print(newURL)
     return newURL
 
+def getContent(url):
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, 'html.parser')
+    return soup
+
+    
+
 def main():
     # ensure the url ends in a 3 number class code
     # userInput = input("Please input your course: ")
     userInput = 'CMPUT 201'
 
-    newURL = nextURL(userInput)
-    
-    r = requests.get(newURL)
-    soup = BeautifulSoup(r.content, 'html.parser')
-    paragraph = isolateParagraph(soup)
+    newURL = nextURL(userInput) # get the new URL of updated course
+    soup = getContent(newURL)   # get the text from the URL
+    paragraph = isolateParagraph(soup)  # create a parsable paragraph
 
     print("\n\n\n\n\n", paragraph, '\n\n\n')
 
-    prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
+    prereqsList = GetPrereqCorereq.getPrereqs(paragraph)    # get the prereqs from the paragraph
 
     createLayer(prereqsList)
 
