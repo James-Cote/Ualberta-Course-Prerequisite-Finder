@@ -5,9 +5,8 @@ body.setAttribute("style", "display: flex; flex-direction: column; align-items: 
 
 const banner = document.createElement("div");
 banner.setAttribute("style", 
-    "width: 2000px; height: 100px; background-color: #285D39; color: white; font-size: 48px; font-family: Verdana; display: flex; align-items: center; justify-content: center; margin-top: 0px")
+    "width: 100%; height: 100px; background-color: #285D39; color: white; font-size: 48px; font-family: Verdana; display: flex; align-items: center; justify-content: center; margin-top: 0px")
 banner.textContent = "Course Prequisite Finder"
-
 body.appendChild(banner);
 
 const inputs = document.createElement("div")
@@ -25,7 +24,6 @@ userInput.addEventListener('keydown', (event) => {
     }
   });
 
-
 const button = document.createElement("button")
 button.setAttribute("style", "width: 64px; height: 32px; background-color: #285D39; color: white")
 button.addEventListener("click", function(){
@@ -34,9 +32,20 @@ button.addEventListener("click", function(){
 })
 button.textContent = "Submit"
 
-
-
 inputs.appendChild(userInput)
 inputs.appendChild(button)
-
 body.appendChild(inputs)
+
+
+
+const footer = document.createElement("div")
+footer.setAttribute("id", "footer")
+footer.setAttribute("style", "width: 100%; height: 30px; background-color: #285D39; color: white; font-size: 16px; font-family: Verdana; position: absolute; bottom:0; left:0; display: flex; align-items: center; justify-content: center")
+
+const aboutLink = document.createElement("a")
+aboutLink.textContent = "about"
+aboutLink.setAttribute("style", "cursor: pointer; color: white; text-decoration: none")
+aboutLink.setAttribute("href", "../template/about.html")
+
+footer.appendChild(aboutLink)
+body.appendChild(footer)
