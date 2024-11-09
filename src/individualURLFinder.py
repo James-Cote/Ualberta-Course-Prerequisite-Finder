@@ -7,10 +7,46 @@ import urllib.request
 import requests
 from bs4 import BeautifulSoup
 from IndividualPara import isolateParagraph
+import Course
 
 import GetPrereqCorereq
 
 BASEURL = "https://apps.ualberta.ca/catalogue/course" 
+COURSEDICT = {}
+
+def createLayer(givenT):
+    original = givenT[0] #original course
+    prereqs = givenT[1]
+    # coreqs = givenT[2]
+
+    course = Course(original, prereqs)
+
+    for i in range(course.dependencyCount):
+        dependencyName = course.pre[i]
+        paragraph = isolateParagraph(nextURL(dependencyName))
+
+def isolateParagraph(soup):
+    '''
+        looks through the html file and finds "containers"
+    '''
+    
+    # soup.find_all returns a list of containers that include different parts of the website
+    text = soup.find_all("div", {"class": "container"})
+    #elementTag =  text[3].get_text() #container at text[3] contains the paragraph we want
+    
+    # Tag contains the course number and the course description which contains information about prereq
+    elementTag = text[3]
+    
+    courseNumber = elementTag.find("h1", {"class": "m-0"}).get_text().strip() # Find the course number as text
+    
+    courseDesc = elementTag.find_all("p")[1].get_text().strip()     # Finds the description of the course
+    #print(courseDesc)
+    
+    courseInfo = courseNumber + '\n' + courseDesc
+    
+    print(courseInfo)
+    
+    #print(elementTag)
 
 
 
