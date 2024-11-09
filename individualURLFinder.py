@@ -7,6 +7,8 @@ import urllib.request
 import requests
 from bs4 import BeautifulSoup
 
+BASEURL = "https://apps.ualberta.ca/catalogue/course" 
+
 def isolateParagraph(soup):
     '''
         looks through the html file and finds "containers"
@@ -27,28 +29,30 @@ def isolateParagraph(soup):
     elementTag =  text[3].get_text() #container at text[3] contains the paragraph we want
     print(elementTag)
 
-def nextURL():
-    pass
-        
-def main():
-    baseURL = "https://apps.ualberta.ca/catalogue/course" 
-
-    # ensure the url ends in a 3 number class code
-    userInput = input("Please input your course: ")
-    # userInput = 'CMPUT 201'
-
-    inputList = userInput.split()
-
-    print(inputList[1])
-    if (len(inputList) != 2):
+def nextURL(classCode: str) -> str:
+    '''
+        Takes a class code as input and returns the associated URL as a string
+        ex: classCode = 'CMPUT 201'
+        returns: "https://apps.ualberta.ca/catalogue/course/CMPUT/201" 
+    '''
+    codeList = classCode.split()
+    if (len(codeList) != 2):
         print("invalid course")
         return 1
-
-    newURL = baseURL
-    for i in range(2):
-        newURL = newURL + '/' + inputList[i]
     
+    newURL = BASEURL
+    for i in range(2):
+        newURL = newURL + '/' + codeList[i]
+
     print(newURL)
+    return newURL
+
+def main():
+    # ensure the url ends in a 3 number class code
+    # userInput = input("Please input your course: ")
+    userInput = 'CMPUT 201'
+
+    newURL = nextURL(userInput)
     
     r = requests.get(newURL)
     soup = BeautifulSoup(r.content, 'html.parser')
