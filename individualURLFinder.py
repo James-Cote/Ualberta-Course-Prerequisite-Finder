@@ -7,6 +7,8 @@ import urllib.request
 import requests
 from bs4 import BeautifulSoup
 
+import GetPrereqCorereq
+
 BASEURL = "https://apps.ualberta.ca/catalogue/course" 
 
 def isolateParagraph(soup):
