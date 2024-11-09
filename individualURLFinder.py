@@ -26,13 +26,31 @@ def isolateParagraph(soup):
 
     elementTag =  text[3].get_text() #container at text[3] contains the paragraph we want
     print(elementTag)
+
+def nextURL():
+    pass
         
 def main():
+    baseURL = "https://apps.ualberta.ca/catalogue/course" 
 
     # ensure the url ends in a 3 number class code
-    url = "https://apps.ualberta.ca/catalogue/course/cmput/201"
+    userInput = input("Please input your course: ")
+    # userInput = 'CMPUT 201'
 
-    r = requests.get(url)
+    inputList = userInput.split()
+
+    print(inputList[1])
+    if (len(inputList) != 2):
+        print("invalid course")
+        return 1
+
+    newURL = baseURL
+    for i in range(2):
+        newURL = newURL + '/' + inputList[i]
+    
+    print(newURL)
+    
+    r = requests.get(newURL)
     soup = BeautifulSoup(r.content, 'html.parser')
     isolateParagraph(soup)
 
