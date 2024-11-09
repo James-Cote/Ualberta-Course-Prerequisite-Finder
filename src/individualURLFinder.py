@@ -8,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 from IndividualPara import isolateParagraph
 from courseClass import Course
+import GetPrereqCorereq
 
 import GetPrereqCorereq
 
@@ -17,20 +18,22 @@ COURSELIST = []
 def createLayer(givenT):
     courseName = givenT[0] #original course
     prereqs = givenT[1]
-    # coreqs = givenT[2]
-    
+    print("Create Layer test")
 
-    if courseName in COURSELIST:
-        return
+
+    # if courseName in COURSELIST:
+    #     return
 
     course = Course(courseName, prereqs)
     COURSELIST.append(course)
 
-    for i in range(len(course.preqreqs)):
-        if len(course.preqres[i]) > 1:
-            for j in range(len(course.preqres[i])):
-                paragraph = isolateParagraph(nextURL(course.preqeqs[i][j]))
-                
+    for i in range(len(course.prereqs)):
+        if len(course.prereqs[i]) > 1:
+            for j in range(len(course.prereqs[i])):
+                paragraph = isolateParagraph(nextURL(course.prereqs[i][j]))
+                prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
+                createLayer(prereqsList)
+
 
 def isolateParagraph(soup):
     '''
@@ -51,10 +54,11 @@ def isolateParagraph(soup):
     
     courseInfo = courseNumber + '\n' + courseDesc
     
-    print(courseInfo)
+    # print(courseInfo)
     
     #print(elementTag)
 
+    return courseInfo
 
 
 def nextURL(classCode: str) -> str:
@@ -84,6 +88,14 @@ def main():
     
     r = requests.get(newURL)
     soup = BeautifulSoup(r.content, 'html.parser')
-    isolateParagraph(soup)
+    paragraph = isolateParagraph(soup)
+
+    print("\n\n\n\n\n", paragraph, '\n\n\n')
+
+    prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
+
+    createLayer(prereqsList)
+
+    print(COURSELIST)
 
 main()
