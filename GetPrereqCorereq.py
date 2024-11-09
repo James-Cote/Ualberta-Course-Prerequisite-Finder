@@ -89,30 +89,31 @@ def course_codes_list(prereq_string):
     '''
     prereq_list=[]
     prereq_or=prereq_string.split(";") #take our list of prereqs and separate them by the ";"
-
+    print("BBBBBBBBBBBBBBBBBBBBBBBSSSSSS",prereq_or)
     coursename_stack=Stack() #have a stack of coursenames renewed for each group of sibling courses
     for siblings_line in prereq_or: 
-        siblings=[]
         siblings_line=siblings_line.split()
         course_name=""
         for word in siblings_line:
             word=remove_punctuation(word)
            # print("HERE IS MYWORD", word)
+            siblings=[]
             if word.isupper(): #do this--we can't simply say uppercase => course code; some courses are two words, ie "MA PH"
+                print("AAAAAAAAAAAAAAAAAAAAAAAAA",word)
                 if course_name:
                     course_name+=" "+word
                 else:
                     course_name+=word
-
-                coursename_stack.push(course_name)
-
+                print(course_name)
             if (word.isdigit()):
+                coursename_stack.push(course_name)  
+                print("COURSE NAME LLLLLLLLL",coursename_stack.peektop())
+                print("THIS IS THE COURSENAME STACK",coursename_stack, course_name, word)
                 #  every time we encounter a course code, push to stack. 
                 #  That way, if we have courses with no course code, just peek to the stack
                 course_name="" #clear the course code
                 course_num=word #duh, because word is a digit.
-
-                course_code = coursename_stack.peektop()+" "+course_num #peek to the top of the stack!
+                course_code = coursename_stack.peektop(), course_num #peek to the top of the stack!
                 siblings.append(course_code)
         prereq_list.append(siblings)     
     return prereq_list       
@@ -123,6 +124,8 @@ def prereqs(parent_text):
     for i in range(len(parent_text)):
         if parent_text[i] == "Prerequisite:" or parent_text[i] == "Prerequisites:":
             prereq_idx = i  #index for the word "Prerequisite(s)"
+            print(prereq_idx) #debug
+            print(parent_text[prereq_idx]) #debug
     prereq_text_block=' '.join(parent_text[1+prereq_idx:])
     
     if "Corequesite" in prereq_text_block or "Corerequisites" in prereq_text_block: #if there are coreqs, get rid of them
@@ -131,9 +134,11 @@ def prereqs(parent_text):
         if "Corerequisites" in prereq_text_block:
             coreq_idx=prereq_text_block.index("Corerequisites")
         prereq_text_block=prereq_text_block[:coreq_idx]
+
+    print("PREREQ TEXT BLOCK",prereq_text_block)
     
     prereq_list= course_codes_list(prereq_text_block)
-    return(prereq_list)
+    print(prereq_list)
               
 coursetext= '''CMPUT 206 - Introduction to Digital Image Processing
 
@@ -147,14 +152,14 @@ An introduction to basic digital image processing theory, and the tools that mak
 Prerequisites: one of CMPUT 101, 174, or 274; one of MATH 100, 114, 117, 134, 144, or 154; and one of MA PH 151, 161, 181, 235, 265, SCI 151, or MATH 181. Corequesite: Blah blah blah 
 '''
 
-def getPrereqs(coursetext):
+def main(coursetext):
         
     '''
     Inputs: parent_text (a huge block of text that includes the course name and description, type str)
-    Outputs: a string, two lists in a tuple
+    Outputs: two lists in a tuple
     '''
     code=course_code(coursetext)
-    prereqlist=(prereqs(coursetext))
-    return code, prereqlist
+    print(code)
+    print(prereqs(coursetext))
 
-getPrereqs(coursetext)
+main(coursetext)
