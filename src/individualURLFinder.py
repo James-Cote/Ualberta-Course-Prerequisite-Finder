@@ -7,23 +7,30 @@ import urllib.request
 import requests
 from bs4 import BeautifulSoup
 from IndividualPara import isolateParagraph
-import Course
+from courseClass import Course
 
 import GetPrereqCorereq
 
 BASEURL = "https://apps.ualberta.ca/catalogue/course" 
-COURSEDICT = {}
+COURSELIST = []
 
 def createLayer(givenT):
-    original = givenT[0] #original course
+    courseName = givenT[0] #original course
     prereqs = givenT[1]
     # coreqs = givenT[2]
+    
 
-    course = Course(original, prereqs)
+    if courseName in COURSELIST:
+        return
 
-    for i in range(course.dependencyCount):
-        dependencyName = course.pre[i]
-        paragraph = isolateParagraph(nextURL(dependencyName))
+    course = Course(courseName, prereqs)
+    COURSELIST.append(course)
+
+    for i in range(len(course.preqreqs)):
+        if len(course.preqres[i]) > 1:
+            for j in range(len(course.preqres[i])):
+                paragraph = isolateParagraph(nextURL(course.preqeqs[i][j]))
+                
 
 def isolateParagraph(soup):
     '''
