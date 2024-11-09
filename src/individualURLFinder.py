@@ -48,6 +48,7 @@ def createLayer(givenT):
 def isolateParagraph(soup):
     '''
         looks through the html file and finds "containers"
+        Returns the course name and its course description for parsing
     '''
     
     # soup.find_all returns a list of containers that include different parts of the website
@@ -92,11 +93,17 @@ def nextURL(classCode: str) -> str:
     return newURL
 
 def getContent(url):
+    '''
+        Takes a url as a string and scrapes the website
+    '''
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'html.parser')
     return soup
 
 def convertCourseCode(courseCode):
+    '''
+        This function handles the logic to get from a course code to a prereqs list
+    '''
     newUrl = nextURL(courseCode)
     soup = getContent(newUrl)
     paragraph = isolateParagraph(soup)
