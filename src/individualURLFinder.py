@@ -23,7 +23,7 @@ def createLayer(givenT):
 
     courseName = givenT[0] #original course
     prereqs = givenT[1]
-    print("Create Layer test")
+    # print("Create Layer test")
 
 
     if courseName in COURSELIST:
@@ -35,10 +35,13 @@ def createLayer(givenT):
     for i in range(len(course.prereqs)):    # looping through all ANDs
         if len(course.prereqs[i]) > 1:
             for j in range(len(course.prereqs[i])):    # looping through all ORs
-                paragraph = isolateParagraph(getContent(nextURL(course.prereqs[i][j])))
+                courseCode = course.prereqs[i][j]
+                prereqsList = convertCourseCode(courseCode)
 
-                print(paragraph)
-                prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
+                # redundant code
+                # paragraph = isolateParagraph(getContent(nextURL(course.prereqs[i][j])))
+                # print(paragraph)
+                # prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
                 createLayer(prereqsList)
 
 
@@ -64,6 +67,8 @@ def isolateParagraph(soup):
     # print(courseInfo)
     
     #print(elementTag)
+
+    print(f"{courseInfo}\n\n")
 
     return courseInfo
 
@@ -91,20 +96,28 @@ def getContent(url):
     soup = BeautifulSoup(r.content, 'html.parser')
     return soup
 
-    
+def convertCourseCode(courseCode):
+    newUrl = nextURL(courseCode)
+    soup = getContent(newUrl)
+    paragraph = isolateParagraph(soup)
+    prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
+    return prereqsList
 
 def main():
     # ensure the url ends in a 3 number class code
     # userInput = input("Please input your course: ")
     userInput = 'CMPUT 201'
 
-    newURL = nextURL(userInput) # get the new URL of updated course
-    soup = getContent(newURL)   # get the text from the URL
-    paragraph = isolateParagraph(soup)  # create a parsable paragraph
+    prereqsList = convertCourseCode(userInput)
 
-    print("\n\n\n\n\n", paragraph, '\n\n\n')
+    # redundant code
+    # newURL = nextURL(userInput) # get the new URL of updated course
+    # soup = getContent(newURL)   # get the text from the URL
+    # paragraph = isolateParagraph(soup)  # create a parsable paragraph
 
-    prereqsList = GetPrereqCorereq.getPrereqs(paragraph)    # get the prereqs from the paragraph
+    # print("\n\n\n\n\n", paragraph, '\n\n\n')
+
+    # prereqsList = GetPrereqCorereq.getPrereqs(paragraph)    # get the prereqs from the paragraph
 
     createLayer(prereqsList)
 
