@@ -8,5 +8,10 @@ r = requests.get(url)
 
 soup = BeautifulSoup(r.content, 'html.parser')
 
-test = soup.find("div", {"class": "course first"})
-#print(test.prettify())
+# looks for "div" and looks for "class" called course first
+
+text = soup.find("div", {"class": "course first"})
+text = text.get_text()
+print(text)
+print(type(text))
+# print(test.prettify())
