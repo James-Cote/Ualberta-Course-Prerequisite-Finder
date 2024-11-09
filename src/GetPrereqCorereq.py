@@ -101,9 +101,6 @@ def course_codes_list(prereq_string):
         course_name=""
         for word in siblings_line:
             word, end_flag=remove_punctuation(word)
-
-            if end_flag:
-                   return prereq_list 
         
             if word.isupper(): #do this--we can't simply say uppercase => course code; some courses are two words, ie "MA PH"
                 if course_name:
@@ -130,8 +127,6 @@ def prereqs(parent_text):
     for i in range(len(parent_text)):
         if parent_text[i] == "Prerequisite:" or parent_text[i] == "Prerequisites:":
             prereq_idx = i  #index for the word "Prerequisite(s)"
-        else:
-            prereq_idx = len(parent_text)-1
     prereq_text_block=' '.join(parent_text[1+prereq_idx:])
     
     if "Corequesite" in prereq_text_block or "Corerequisites" in prereq_text_block: #if there are coreqs, get rid of them
@@ -177,5 +172,3 @@ Faculty of Science
 
 This is part 2 of a 2 sequence intensive introduction to Computing Science. Part 2 expands to add object-oriented programming, with C++, and more complex algorithms and data structures such as shortest paths in graphs; divide and conquer and dynamic programming; client-server style computing; and recursion. Prerequisite: CMPUT 274. Note: this course is taught in studio-style, where lectures and labs are blended into 3 hour sessions, twice a week. Enrollment is limited by the capacity of the combined lecture/lab facilities. Credit cannot be obtained for CMPUT 275 if one already has credit for any of CMPUT 174, 175, or 201, except with permission of the Department.'''
 ex4='''OLIVIA 101 - skdbfksdbna nasjwjsnx ewud'''
-output= getPrereqs(ex4)
-print(output)
