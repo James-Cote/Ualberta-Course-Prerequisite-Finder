@@ -9,7 +9,19 @@ banner.textContent = "4DG"
 
 body.appendChild(banner);
 
+const inputs = document.createElement("div")
+inputs.setAttribute("style", "display: flex; align-items: center")
+
 const input = document.createElement("input")
 input.setAttribute("style","margin:16px; height: 32px; width: 200px;")
+input.setAttribute("placeholder", "Example: 'CMPUT'")
 
-body.appendChild(input)
+const button = document.createElement("button")
+button.setAttribute("style", "width: 64px; height: 32px; background-color: #285D39; color: white")
+button.textContent = "Submit"
+
+inputs.appendChild(input)
+inputs.appendChild(button)
+
+body.appendChild(inputs)
+
