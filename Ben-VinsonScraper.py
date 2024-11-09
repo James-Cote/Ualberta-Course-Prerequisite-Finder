@@ -15,6 +15,7 @@ def benWork(soup):
     # print(type(text))
 
 def main():
+    # url = "https://apps.ualberta.ca/catalogue/course/cmput/201"
     url = "https://apps.ualberta.ca/catalogue/course/cmput"
 
     r = requests.get(url)
