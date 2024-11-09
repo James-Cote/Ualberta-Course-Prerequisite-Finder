@@ -147,14 +147,14 @@ An introduction to basic digital image processing theory, and the tools that mak
 Prerequisites: one of CMPUT 101, 174, or 274; one of MATH 100, 114, 117, 134, 144, or 154; and one of MA PH 151, 161, 181, 235, 265, SCI 151, or MATH 181. Corequesite: Blah blah blah 
 '''
 
-def main(coursetext):
+def getPrereqs(coursetext):
         
     '''
     Inputs: parent_text (a huge block of text that includes the course name and description, type str)
-    Outputs: two lists in a tuple
+    Outputs: a string, two lists in a tuple
     '''
     code=course_code(coursetext)
-    print(code)
-    print(prereqs(coursetext))
+    prereqlist=(prereqs(coursetext))
+    return code, prereqlist
 
-main(coursetext)
+getPrereqs(coursetext)
