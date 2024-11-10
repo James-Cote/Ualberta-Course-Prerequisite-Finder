@@ -8,39 +8,41 @@ def dumpCourseToJSON(course_list, json_file):
     # Find the corresponding level
     node_level = {}
 
+    # Fancy Colors
+    color_i = 0
+
     for i_course in course_list:
-        # Add the node to the node data file
-        nodeDataArray.append({"key":i_course.name})
         # Adding to level dictionary
         if (i_course.name not in node_level):
             node_level[i_course.name] = 0
 
         if (i_course.prereqs == None):
             continue
-        color_i = 0
-        for colors in i_course.prereqs:
-            # Get the color of the prereqs
-            color_code = "#990000"
-            if (color_i == 1):
-                color_code = "#009900"
-            elif (color_i == 2):
-                color_code = "#000099"
-            color_i += 1
 
+        print(i_course.name, "prereqs", i_course.prereqs, type(i_course.prereqs))
+        if (not isinstance(i_course.prereqs[0], list)):
+            continue
+
+        for colors in i_course.prereqs:
             for j_course in colors:
                 # Add all connections to the link data file
-                linkDataArray.append({"from":i_course.name, "to":j_course, "color":color_code})
+                linkDataArray.append({"from":i_course.name, "to":j_course, "line_color":color_i})
                 # Level Calculation
                 if (j_course in node_level):
                     if (node_level[i_course.name] >= node_level[j_course]):
                         node_level[j_course] = node_level[i_course.name] + 1
                 else:
                     node_level[j_course] = node_level[i_course.name] + 1
+            # Next color group (finished this or fucntionality)
+            color_i = color_i + 1
 
 
-    # Add the level to the nodes
-    for course_i in range(len(nodeDataArray)):
-        nodeDataArray[course_i]["level"] = node_level[nodeDataArray[course_i]["key"]]
+    # Make Node Array based on level
+    mapped_nodes = list(node_level.items())
+    mapped_nodes.sort(key = lambda x: x[1])
+    print(mapped_nodes)
+    for i_node in mapped_nodes:
+        nodeDataArray.append({"key":i_node[0], "level":i_node[1]}) 
     
     # Write the JSON file
     write_file = open(json_file, 'w')
