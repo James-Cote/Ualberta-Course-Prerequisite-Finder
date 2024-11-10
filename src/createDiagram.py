@@ -8,6 +8,8 @@ def dumpCourseToJSON(course_list, json_file):
     for i_course in course_list:
         # Add the node to the node data file
         nodeDataArray.append({"key":i_course.name})
+        if (i_course.prereqs == None):
+            continue
         color_i = 0
         for colors in i_course.prereqs:
             # Get the color of the prereqs

@@ -30,6 +30,7 @@ function changeGraph() {
 
 
 function sendData(course) {
+    console.log(course);
     fetch('/api/data', {
         method: 'POST',
         headers: {
