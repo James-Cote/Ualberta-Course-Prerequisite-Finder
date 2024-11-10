@@ -18,12 +18,13 @@ def get_data():
 def receive_data():
     data = request.get_json()  # Get the JSON data from the request
     message = data.get("message", "")
-    response = {"reply": f"Received: {userInput(message)}"}
+    print("\n\n\n\n\n\n\n\n\n\n\n")
+    print(f"printing msg {message}")
+    response = {"reply": message}
 
     
-    createDiagram.dumpCourseToJSON(message, 'static/js/JSON/diagramData.json')
-    
-    print(response)
+    createDiagram.dumpCourseToJSON(userInput(message), 'static/js/JSON/diagramData.json')
+
     
     return jsonify(response)
 

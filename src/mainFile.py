@@ -74,7 +74,8 @@ def userInput(name):
     return COURSELIST
 
 def main():
-    userInput = 'PHYS 208'
+
+    userInput = 'MATH 315'
 
     prereqsList = iFinder.convertCourseCode(userInput)
     # print("4 createlayer")
@@ -84,6 +85,7 @@ def main():
     for i in COURSELIST:
         print(i.name)
     print(COURSENAMELIST)
-
+    
+    
 if __name__ == '__main__':
     main()
