@@ -92,8 +92,8 @@ def course_codes_list(prereq_string):
     [STAT 151, STAT 161, STAT 181, STAT 235, STAT 265, SCI 151, MATH 181]]
     '''
     prereq_list=[]
+    prereq_string=prereq_string.replace("and",";")
     prereq_or=prereq_string.split(";") #take our list of prereqs and separate them by the ";"
-    prereq_or=(''.join(prereq_or)).split("and")
     coursename_stack=Stack() #have a stack of coursenames renewed for each group of sibling courses
     for siblings_line in prereq_or: 
         siblings=[]
@@ -101,7 +101,7 @@ def course_codes_list(prereq_string):
         course_name=""
         for word in siblings_line:
             word, end_flag=remove_punctuation(word)
-        
+
             if word.isupper(): #do this--we can't simply say uppercase => course code; some courses are two words, ie "MA PH"
                 if course_name:
                     course_name+=" "+word
@@ -116,17 +116,26 @@ def course_codes_list(prereq_string):
                 course_num=word #duh, because word is a digit.
 
                 course_code = coursename_stack.peektop()+" "+course_num #peek to the top of the stack!
-                siblings.append(course_code)    
+                if course_code:
+                    siblings.append(course_code) 
+
+            if end_flag:
+                prereq_list.append(siblings)
+                return prereq_list
                 
-        prereq_list.append(siblings)
+        if siblings:
+             prereq_list.append(siblings)
     return prereq_list       
         
 
 def prereqs(parent_text):
     parent_text=parent_text.split()
+    prereq_idx=0
     for i in range(len(parent_text)):
         if parent_text[i] == "Prerequisite:" or parent_text[i] == "Prerequisites:":
             prereq_idx = i  #index for the word "Prerequisite(s)"
+    if not prereq_idx:
+        return None
     prereq_text_block=' '.join(parent_text[1+prereq_idx:])
     
     if "Corequesite" in prereq_text_block or "Corerequisites" in prereq_text_block: #if there are coreqs, get rid of them
@@ -156,7 +165,9 @@ ex1= '''CMPUT 204 - Algorithms I
 3 units (fi 6)(EITHER, 3-1S-0)
 Faculty of Science
 
-The first of two courses on algorithm design and analysis, with emphasis on fundamentals of searching, sorting, and graph algorithms. Examples include divide and conquer, dynamic programming, greedy methods, backtracking, and local search methods, together with analysis techniques to estimate program efficiency. Prerequisites: CMPUT 175 or 275, and CMPUT 272; and one of MATH 100, 114, 117, 134, 144, or 154.'''
+The first of two courses on algorithm design and analysis, with emphasis on fundamentals of searching,
+sorting, and graph algorithms. Examples include divide and conquer, dynamic programming, greedy methods, backtracking, and local search methods, together with analysis techniques to estimate program efficiency. 
+Prerequisites: CMPUT 175 or 275, and CMPUT 272; and one of MATH 100, 114, 117, 134, 144, or 154.'''
 ex2='''CMPUT 206 - Introduction to Digital Image Processing
 3 units (fi 6)(EITHER, 3-0-3)
 Faculty of Science
