@@ -3,7 +3,6 @@
     the paragraph that includes the information, specifically with the co/prerequisites
 '''
 
-import urllib.request
 import requests
 from bs4 import BeautifulSoup
 from IndividualPara import isolateParagraph
@@ -13,42 +12,6 @@ import GetPrereqCorereq
 import GetPrereqCorereq
 
 BASEURL = "https://apps.ualberta.ca/catalogue/course" 
-COURSELIST = []
-
-def createLayer(givenT):
-    print("givenT: ", givenT)
-
-    if givenT[1] == None:
-        return
-    if len(givenT[1]) == 0:
-        return
-
-    courseName = givenT[0] #original course
-    prereqs = givenT[1]
-    # print("Create Layer test")
-
-
-    if courseName in COURSELIST:
-        return
-
-    course = Course(courseName, prereqs)
-    COURSELIST.append(course)
-
-    for i in range(len(course.prereqs)):    # looping through all ANDs
-        if len(course.prereqs[i]) > 1:
-            for j in range(len(course.prereqs[i])):    # looping through all ORs
-                courseCode = course.prereqs[i][j]
-                prereqsList = convertCourseCode(courseCode)
-
-                # redundant code
-                # paragraph = isolateParagraph(getContent(nextURL(course.prereqs[i][j])))
-                # print(paragraph)
-                # prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
-                createLayer(prereqsList)
-        elif len(course.prereqs) == 1:
-            courseCode = course.prereqs[0][0]
-            prereqsList = convertCourseCode(courseCode)
-            createLayer(prereqsList)
 
 
 def isolateParagraph(soup):
@@ -88,8 +51,7 @@ def nextURL(classCode: str) -> str:
     '''
     codeList = classCode.split()
     if (len(codeList) != 2):
-        print("invalid course")
-        return 1
+        return 'INVALID'
     
     newURL = BASEURL
     for i in range(2):
@@ -111,29 +73,11 @@ def convertCourseCode(courseCode):
         This function handles the logic to get from a course code to a prereqs list
     '''
     newUrl = nextURL(courseCode)
+
+    if newUrl == 'INVALID':
+        return 'INVALID'
+    
     soup = getContent(newUrl)
     paragraph = isolateParagraph(soup)
     prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
     return prereqsList
-
-def main():
-    # ensure the url ends in a 3 number class code
-    # userInput = input("Please input your course: ")
-    userInput = 'CMPUT 201'
-
-    prereqsList = convertCourseCode(userInput)
-
-    # redundant code
-    # newURL = nextURL(userInput) # get the new URL of updated course
-    # soup = getContent(newURL)   # get the text from the URL
-    # paragraph = isolateParagraph(soup)  # create a parsable paragraph
-
-    # print("\n\n\n\n\n", paragraph, '\n\n\n')
-
-    # prereqsList = GetPrereqCorereq.getPrereqs(paragraph)    # get the prereqs from the paragraph
-
-    createLayer(prereqsList)
-
-    print(COURSELIST)
-
-main()
