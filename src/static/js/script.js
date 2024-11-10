@@ -28,9 +28,15 @@ function changeGraph() {
     .catch(error => console.error('Error loading file:', error));
   }
 
+function loadingGraph() {
+  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
+  myDiagram.model = new go.GraphLinksModel([{key:"Loading"},{key:"dot."},{key:"dot.."},{key:"dot..."}], [{from:"Loading", to:"dot."}, {from:"dot.", to:"dot.."}, {from:"dot..", to:"dot..."}]);
+}
+
 
 function sendData(course) {
     console.log(course);
+    loadingGraph();
     fetch('/api/data', {
         method: 'POST',
         headers: {
