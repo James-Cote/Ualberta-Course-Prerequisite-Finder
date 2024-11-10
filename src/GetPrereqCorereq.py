@@ -206,3 +206,6 @@ Faculty of Science
 CMPUT 174 and 175 use a problem-driven approach to introduce the fundamental ideas of Computing Science. 
 Emphasis is on the underlying process behind the solution, independent of programming language or style. Basic notions of state, control flow, data structures, recursion, modularization, and testing are introduced through solving simple problems in a variety of domains such as text analysis, map navigation, game search, simulation, and cryptography. Students learn to program by reading and modifying existing programs as well as writing new ones. No prior programming experience is necessary. 
 Prerequisite: Math 30, 30-1, or 30-2. See Note (1) above. Credit cannot be obtained for CMPUT 174 if credit has already been obtained for CMPUT 274, 275, or ENCMP 100, except with permission of the Department.'''
+
+ex6='''HADVC 456 blah blah Prerequisite: Any HADVC 3XX.'''
+ex7='''ENGL 216 - sdvsijdvksndd Prerequisite: 6 units of junior ENGL, or 3 units of junior ENGL and 3 units of junior WRS.'''
