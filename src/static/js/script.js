@@ -20,7 +20,12 @@ function changeGraph() {
     fetch('../static/js/JSON/diagramData.json')
     .then(response => response.json())
     .then(data => {
-      console.log(data),
+      console.log(data);
+      console.log(data[0][0]["key"]);
+      if (data[0][0]["key"] == "I") {
+        console.log("SAME");
+        data[0] = [{key:"Invalid Course ID", level: 0}]
+      }
       myDiagram.model = new go.GraphLinksModel(
         data[0], data[1]
       );
@@ -118,6 +123,8 @@ function changeMainTheme() {
 const footer = document.createElement("div")
 footer.setAttribute("id", "footer")
 footer.setAttribute("style", "width: 100%; height: 30px; background-color: #285D39; color: white; font-size: 16px; font-family: Verdana; display: flex; align-items: center; justify-content: center")
+footer.setAttribute("class", "box-div")
+
 
 const members = document.createElement("div")
 members.textContent = "Ben Bui, Olivia Cai, Kevin Cao, James Cotey, Vinson Lou"
