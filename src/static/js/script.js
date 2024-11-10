@@ -30,7 +30,7 @@ function changeGraph() {
 
 function loadingGraph() {
   const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
-  myDiagram.model = new go.GraphLinksModel([{key:"Loading"},{key:"dot."},{key:"dot.."},{key:"dot..."}], [{from:"Loading", to:"dot."}, {from:"dot.", to:"dot.."}, {from:"dot..", to:"dot..."}]);
+  myDiagram.model = new go.GraphLinksModel([{key:"Loading", level:0},{key:"dot.", level:1},{key:"dot..", level:2},{key:"dot...", level:3}], [{from:"Loading", to:"dot."}, {from:"dot.", to:"dot.."}, {from:"dot..", to:"dot..."}]);
 }
 
 
