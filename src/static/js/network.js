@@ -44,7 +44,8 @@ const myDiagram =
       ],
       text: '#FFF',
       shadow: '#9ca3af',
-      outline: "#000000"
+      outline: "#000000",
+      extra: " "
     }
   });
 
@@ -54,21 +55,22 @@ const myDiagram =
       background: '#DD70A9',
       levels: [
         "#DD70A9",
-        "#DD70A9",
-        "#DD70A9",
-        "#DD70A9",
-        "#DD70A9",
+        "#DE80B9",
+        "#DF90C9",
+        "#E1A0D9",
+        "#E2B0E9",
       ],
       stroke_lines: [
         "#DE6776",
-        "#DEDE76",
-        "#DE67DE",
-        "#DE67DE",
-        "#DE67DE",
-        "#DE67DE"
+        "#9F2B68",
+        "#DE3163",
+        "#F88379",
+        "#FF69B4",
+        "#FFB6C1"
       ],
       text: '#fff',
       shadow: '#111827',
+      extra: "<3"
     }
   });
 
@@ -91,7 +93,11 @@ myDiagram.nodeTemplate =
       shadowOffset: new go.Point(0, 2)
     })
   .add(
-    new go.Panel(go.Panel.Auto, { name: 'BODY', width: 150, dragSelect: null})
+    new go.Panel(go.Panel.Auto, {
+      name: 'BODY',
+      width: 150,
+      dragSelect: null
+    })
     .add(
         // define the node's outer shape
         new go.Shape('RoundedRectangle', {
@@ -103,20 +109,22 @@ myDiagram.nodeTemplate =
           spot2: go.Spot.BottomRight,
           outline: "#000000"
         }).themeObject('fill', '', 'levels', findLevelColor),
+
         new go.TextBlock("Default Text",  // the initial value for TextBlock.text 
             // some room around the text, a larger font, and a white stroke:
             { margin: 12, font: "16px sans-serif", textAlign: "center" })
         // TextBlock.text is data bound to the "name" property of the model data
         .bind("text", "key")
-        .theme("stroke", "text"),
-        new go.TextBlock("Default Text",  // the initial value for TextBlock.text
-          // some room around the text, a larger font, and a white stroke:
-          { margin: 12, font: "16px sans-serif", textAlign: "center" })
-        // TextBlock.text is data bound to the "name" property of the model data
-        .bind("text", "key")
         .theme("stroke", "text")
-        )
-    ).theme('shadowColor', 'shadow');
+    ).theme('shadowColor', 'shadow'),
+
+    new go.TextBlock("Default Text",  // the initial value for TextBlock.text
+      // some room around the text, a larger font, and a white stroke:
+      { bold: true, font: "16px sans-serif", textAlign: "left", })
+    // TextBlock.text is data bound to the "name" property of the model data
+    .theme("text", "extra")
+    .theme("stroke", "background")
+  );
 
 myDiagram.nodeTemplate.selectionAdornmentTemplate = new go.Adornment('Spot')
   .add(
