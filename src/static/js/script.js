@@ -28,8 +28,15 @@ function changeGraph() {
     .catch(error => console.error('Error loading file:', error));
   }
 
+function loadingGraph() {
+  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
+  myDiagram.model = new go.GraphLinksModel([{key:"Loading", level:0},{key:"dot.", level:1},{key:"dot..", level:2},{key:"dot...", level:3}], [{from:"Loading", to:"dot."}, {from:"dot.", to:"dot.."}, {from:"dot..", to:"dot..."}]);
+}
+
 
 function sendData(course) {
+    console.log(course);
+    loadingGraph();
     fetch('/api/data', {
         method: 'POST',
         headers: {
@@ -52,7 +59,8 @@ body.setAttribute("style", "display: flex; flex-direction: column; align-items: 
 
 const banner = document.createElement("div");
 banner.setAttribute("style", 
-    "width: 100%; height: 100px; background-color: #285D39; color: white; font-size: 48px; font-family: Verdana; display: flex; align-items: center; justify-content: center; margin-top: 0px")
+    "width: 100%; height: 100px; background-color: #285D39; box-shadow: 3px 3px 3px #CCCCCC; color: white; font-size: 48px; font-family: Verdana; display: flex; align-items: center; justify-content: center; margin-top: 0px")
+
 banner.textContent = "Course Prequisite Finder"
 body.appendChild(banner);
 
@@ -88,6 +96,23 @@ inputs.appendChild(userInput)
 inputs.appendChild(button)
 body.appendChild(inputs)
 
+//theme build
+theme_colors = {
+  "base":"#285D39",
+  "pretty":"#DD70A9"
+}
+
+//make variable theme
+function changeMainTheme() {
+  banner.style.backgroundColor = theme_colors[document.getElementById('theme').value];
+
+  // box-div elements
+  const elements = document.querySelectorAll(".box-div");
+
+  elements.forEach(element => {
+      element.style.backgroundColor = theme_colors[document.getElementById('theme').value];;
+  });
+}
 
 
 const footer = document.createElement("div")
@@ -97,7 +122,7 @@ footer.setAttribute("style", "width: 100%; height: 30px; background-color: #285D
 const aboutLink = document.createElement("a")
 aboutLink.textContent = "about"
 aboutLink.setAttribute("style", "cursor: pointer; color: white; text-decoration: none")
-aboutLink.setAttribute("href", "../template/about.html")
+aboutLink.setAttribute("href", "../../template/about.html")
 
 footer.appendChild(aboutLink)
 body.appendChild(footer)

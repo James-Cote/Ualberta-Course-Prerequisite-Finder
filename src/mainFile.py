@@ -64,6 +64,7 @@ def createLayer(givenT):
 
 def userInput(name):
     COURSELIST.clear()
+    COURSENAMELIST.clear()
     prereqsList = iFinder.convertCourseCode(name)
     # print("3 createlayer")
     createLayer(prereqsList)
