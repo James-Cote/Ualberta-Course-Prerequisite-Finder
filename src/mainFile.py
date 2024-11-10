@@ -28,9 +28,10 @@ def createLayer(givenT):
     course = Course(courseName, prereqs)
     
     for i in range(len(course.prereqs)):    # looping through all ANDs
+        #if isinstance(course.prereqs[i], str):
+        #   print("THIS IS A STRING~")
+        #  return
         print("course prereqs",course.prereqs[i], "course prereqs length ",len(course.prereqs[i]))
-        if not isinstance(course.prereqs, list):
-            break
         if len(course.prereqs[i]) > 1: #  more than one course is a prereq
             for j in range(len(course.prereqs[i])):    # looping through all ORs
                 courseCode = course.prereqs[i][j]

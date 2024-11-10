@@ -1,2 +1,2 @@
-if not isinstance(course.prereqs, list):
-            continue
+        #   print("THIS IS A STRING~")
+        #  return
