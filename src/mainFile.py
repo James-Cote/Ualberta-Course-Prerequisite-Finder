@@ -28,9 +28,6 @@ def createLayer(givenT):
     course = Course(courseName, prereqs)
     
     for i in range(len(course.prereqs)):    # looping through all ANDs
-        #if isinstance(course.prereqs[i], str):
-        #   print("THIS IS A STRING~")
-        #  return
         print("course prereqs",course.prereqs[i], "course prereqs length ",len(course.prereqs[i]))
         
         if (isinstance((course.prereqs[i]), str) ):
@@ -39,13 +36,13 @@ def createLayer(givenT):
             for j in range(len(course.prereqs[i])):    # looping through all ORs
                 courseCode = course.prereqs[i][j]
                 prereqsList = iFinder.convertCourseCode(courseCode) # converts the coursecode into the prereqs list of that course
-                print("1 createlayer", prereqsList)
+                # print("1 createlayer", prereqsList)
                 if prereqsList!='INVALID':
                     createLayer(prereqsList)
         elif len(course.prereqs[i]) == 1: # only one course is a prereq
             courseCode = course.prereqs[0][0]
             prereqsList = iFinder.convertCourseCode(courseCode)
-            print("2 createlayer")
+            # print("2 createlayer")
             if prereqsList != 'INVALID':
                 createLayer(prereqsList)
             else:
@@ -62,7 +59,7 @@ def createLayer(givenT):
 def userInput(name):
     COURSELIST.clear()
     prereqsList = iFinder.convertCourseCode(name)
-    print("3 createlayer")
+    # print("3 createlayer")
     createLayer(prereqsList)
     
     for i in COURSELIST:
@@ -72,7 +69,7 @@ def main():
     userInput = 'MATH 315'
 
     prereqsList = iFinder.convertCourseCode(userInput)
-    print("4 createlayer")
+    # print("4 createlayer")
     createLayer(prereqsList)
     
     
