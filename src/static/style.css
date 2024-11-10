@@ -1,7 +1,6 @@
 .box-div {
-    padding: 10px;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
     background-color: #285D39;
     border-radius: 5px;
     display: flex;
@@ -13,12 +12,12 @@
 }
 
 .theme-select {
-    font-size: 20px;
+    font-size: 16px;
     font-family: Verdana;
 }
 
 .theme-box {
-    height: 40px;
+    height: 30px;
     width: 80px;
     border-radius: 5px;
     color: #285D39;

@@ -16,7 +16,7 @@ def dumpCourseToJSON(course_list, json_file):
         if (i_course.name not in node_level):
             node_level[i_course.name] = 0
 
-        if (i_course.prereqs == None):
+        if (i_course.prereqs == None or len(i_course.prereqs) == 0):
             continue
 
         print(i_course.name, "prereqs", i_course.prereqs, type(i_course.prereqs))
