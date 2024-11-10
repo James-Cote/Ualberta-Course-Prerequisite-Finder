@@ -2,6 +2,7 @@ import individualURLFinder as iFinder
 from courseClass import Course
 
 COURSELIST = []
+COURSENAMELIST = []
 
 
 def createLayer(givenT):
@@ -15,7 +16,7 @@ def createLayer(givenT):
     courseName = givenT[0] #original course
     prereqs = givenT[1]
 
-    if courseName in COURSELIST:
+    if courseName in COURSENAMELIST:
         return
 
     course = Course(courseName, prereqs)
@@ -40,10 +41,11 @@ def createLayer(givenT):
             print("BreakCase")
 
     COURSELIST.append(course)
+    COURSENAMELIST.append(courseName)
 
 
 def main():
-    userInput = 'CMPUT 201'
+    userInput = 'MATH 315'
 
     prereqsList = iFinder.convertCourseCode(userInput)
 
