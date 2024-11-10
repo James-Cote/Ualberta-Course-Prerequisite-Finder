@@ -68,7 +68,7 @@ const myDiagram =
       ],
       text: '#fff',
       shadow: '#111827',
-      extra: "<3"
+      extra: " ♥"
     }
   });
 
