@@ -66,7 +66,7 @@ const banner = document.createElement("div");
 banner.setAttribute("style", 
     "width: 100%; height: 100px; background-color: #285D39; box-shadow: 3px 3px 3px #CCCCCC; color: white; font-size: 48px; font-family: Verdana; display: flex; align-items: center; justify-content: center; margin-top: 0px")
 
-banner.textContent = "Course Prequisite Finder"
+banner.textContent = "Course Prerequisite Finder"
 body.appendChild(banner);
 
 const inputs = document.createElement("div")
