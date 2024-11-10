@@ -4,6 +4,8 @@ const myDiagram =
   new go.Diagram("myDiagramDiv",
     { // enable Ctrl-Z to undo and Ctrl-Y to redo
       "undoManager.isEnabled": true,
+      allowCopy: false,
+      allowDelete: false,
       layout: new go.TreeLayout({
         treeStyle: go.TreeStyle.LastParents,
         arrangement: go.TreeArrangement.Horizontal,
@@ -32,6 +34,14 @@ const myDiagram =
         "#5B8F6C",
         "#6C9F7D",
       ],
+      stroke_lines: [
+        "#DE2332",
+        "#23DE32",
+        "#3223DE",
+        "#32DEDE",
+        "#DE23DE",
+        "#DEDE32"
+      ],
       text: '#FFF',
       shadow: '#9ca3af',
       outline: "#000000"
@@ -49,6 +59,14 @@ const myDiagram =
         "#DD70A9",
         "#DD70A9",
       ],
+      stroke_lines: [
+        "#DE6776",
+        "#DEDE76",
+        "#DE67DE",
+        "#DE67DE",
+        "#DE67DE",
+        "#DE67DE"
+      ],
       text: '#fff',
       shadow: '#111827',
     }
@@ -61,6 +79,9 @@ function findLevelColor(node) {
   return node.data.level;
 }
 
+function findStrokeColor(link) {
+  return link.data.line_color % 6;
+}
 
 myDiagram.nodeTemplate =
     new go.Node("Horizontal",
@@ -118,11 +139,11 @@ myDiagram.linkTemplate =
 
         routing: go.Routing.AvoidsNodes,
         corner: 5 })
-        .bind("shadowColor", "color")
+        .themeObject('shadowColor', '', 'stroke_lines', findStrokeColor)
     .add(
       // the link path, a Shape
       new go.Shape({ strokeWidth: 3 })
-      .bind("stroke", "color"),
+      .themeObject('stroke', '', 'stroke_lines', findStrokeColor)
       // if we wanted an arrowhead we would also add another Shape with toArrow defined:
       //new go.Shape({  toArrow: "Standard", stroke: null  })
     );
