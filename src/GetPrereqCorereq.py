@@ -208,4 +208,4 @@ Emphasis is on the underlying process behind the solution, independent of progra
 Prerequisite: Math 30, 30-1, or 30-2. See Note (1) above. Credit cannot be obtained for CMPUT 174 if credit has already been obtained for CMPUT 274, 275, or ENCMP 100, except with permission of the Department.'''
 
 output = getPrereqs(ex4)
-print(output)
+# print(output)
