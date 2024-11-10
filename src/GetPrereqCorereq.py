@@ -80,8 +80,10 @@ def remove_punctuation(word):
         end=False
     return (re.sub(r'[^a-zA-Z0-9]', '', word), end)
 
-def course_codes_list(prereq_string):
+def course_codes_list(prereq_string): 
     '''
+    This code only runs if the word "Prereq" etc is in the string.
+
     Inputs: prereq_or (str) is a string. ie 
     "Prerequisites: one of CMPUT 101, 174, or 274; one of MATH 100, 114, 117, 134, 144, or 154; 
     and one of STAT 151, 161, 181, 235, 265, SCI 151, or MATH 181."
@@ -101,6 +103,8 @@ def course_codes_list(prereq_string):
         course_name=""
         for word in siblings_line:
             word, end_flag=remove_punctuation(word)
+            if end_flag:
+                end_index=prereq_string.index(".")
 
             if word.isupper(): #do this--we can't simply say uppercase => course code; some courses are two words, ie "MA PH"
                 if course_name:
@@ -114,12 +118,17 @@ def course_codes_list(prereq_string):
                 #  That way, if we have courses with no course code, just peek to the stack
                 course_name="" #clear the course code
                 course_num=word #duh, because word is a digit.
-
-                course_code = coursename_stack.peektop()+" "+course_num #peek to the top of the stack!
+                course_code=""
+                try:
+                    course_code = coursename_stack.peektop()+" "+course_num #peek to the top of the stack!
+                except:
+                    pass
                 if course_code:
                     siblings.append(course_code) 
-
+            
             if end_flag:
+                if not siblings:
+                    siblings=prereq_string[:end_index]
                 prereq_list.append(siblings)
                 return prereq_list
                 
@@ -183,3 +192,20 @@ Faculty of Science
 
 This is part 2 of a 2 sequence intensive introduction to Computing Science. Part 2 expands to add object-oriented programming, with C++, and more complex algorithms and data structures such as shortest paths in graphs; divide and conquer and dynamic programming; client-server style computing; and recursion. Prerequisite: CMPUT 274. Note: this course is taught in studio-style, where lectures and labs are blended into 3 hour sessions, twice a week. Enrollment is limited by the capacity of the combined lecture/lab facilities. Credit cannot be obtained for CMPUT 275 if one already has credit for any of CMPUT 174, 175, or 201, except with permission of the Department.'''
 ex4='''OLIVIA 101 - skdbfksdbna nasjwjsnx ewud'''
+
+ex5='''CMPUT 201 - Practical Programming Methodology
+3 units (fi 6)(EITHER, 3-0-3)
+Faculty of Science
+
+Introduction to the principles, methods, tools, and practices of the professional programmer. The lectures focus on the fundamental principles of software engineering based on abstract data types and their implementations. The laboratories offer an intensive apprenticeship to the aspiring software developer. Students use C and software development tools of the Unix environment. Prerequisite: CMPUT 175. Credit cannot be obtained for CMPUT 201 if credit has been obtained for CMPUT 275, except with permission of the Department.'''
+
+ex5='''CMPUT 174 - Introduction to the Foundations of Computation I
+3 units (fi 6)(EITHER, 3-0-3)
+Faculty of Science
+
+CMPUT 174 and 175 use a problem-driven approach to introduce the fundamental ideas of Computing Science. 
+Emphasis is on the underlying process behind the solution, independent of programming language or style. Basic notions of state, control flow, data structures, recursion, modularization, and testing are introduced through solving simple problems in a variety of domains such as text analysis, map navigation, game search, simulation, and cryptography. Students learn to program by reading and modifying existing programs as well as writing new ones. No prior programming experience is necessary. 
+Prerequisite: Math 30, 30-1, or 30-2. See Note (1) above. Credit cannot be obtained for CMPUT 174 if credit has already been obtained for CMPUT 274, 275, or ENCMP 100, except with permission of the Department.'''
+
+output = getPrereqs(ex4)
+print(output)
