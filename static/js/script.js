@@ -8,11 +8,34 @@ function encodeJSONData(course)
     console.log(data)
 
     fetch('/api/data')
+    {
         .then(response => response.json())
-        .then(data => {
+        .then(data => 
+        {
             data
         })
         .catch(error => console.error('Error:', error));
+    }
+}
+
+function sendData(data) 
+{
+
+    fetch('/api/data', 
+    {
+        method: 'POST',
+        headers: 
+        {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: data })  // Send the message as JSON
+    })
+    .then(response => response.json())
+    .then(data => 
+    {
+        console.log(data.reply)
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 const body = document.querySelector("body");
@@ -37,7 +60,7 @@ userInput.addEventListener('keydown', (event) => {
         course = document.getElementById("userInput").value
         console.log(course)
 
-        encodeJSONData(course)
+        sendData(course)
     }
   });
 
@@ -47,7 +70,7 @@ button.addEventListener("click", function(){
     course = document.getElementById("userInput").value
     console.log(course)
 
-    encodeJSONData(course)
+    sendData(course)
 })
 button.textContent = "Submit"
 

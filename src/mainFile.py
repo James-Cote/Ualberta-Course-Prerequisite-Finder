@@ -45,6 +45,14 @@ def createLayer(givenT):
     COURSELIST.append(course)
     COURSENAMELIST.append(courseName)
 
+def userInput(name):
+    COURSELIST.clear()
+    prereqsList = iFinder.convertCourseCode(name)
+    
+    createLayer(prereqsList)
+    
+    for i in COURSELIST:
+        print(i.name)
 
 def main():
     userInput = 'MATH 315'
