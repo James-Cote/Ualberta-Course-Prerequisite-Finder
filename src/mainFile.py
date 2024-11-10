@@ -19,7 +19,7 @@ def createLayer(givenT):
         return
 
     course = Course(courseName, prereqs)
-    COURSELIST.append(course)
+    
 
     for i in range(len(course.prereqs)):    # looping through all ANDs
         if len(course.prereqs[i]) > 1:
@@ -39,6 +39,8 @@ def createLayer(givenT):
         else:
             print("BreakCase")
 
+    COURSELIST.append(course)
+
 
 def main():
     userInput = 'CMPUT 201'
@@ -46,6 +48,10 @@ def main():
     prereqsList = iFinder.convertCourseCode(userInput)
 
     createLayer(prereqsList)
-    print(COURSELIST)
+    
+    
+    for i in COURSELIST:
+        print(i.name)
+    #print(COURSELIST)
 
 main()

@@ -19,9 +19,10 @@ def isolateParagraph(soup):
         looks through the html file and finds "containers"
         Returns the course name and its course description for parsing
     '''
-    # Look for any errors
+    # Look for any errors and return "ERROR" if there's more than 1 error
     error = soup.find_all("h4", {"class": "alert-heading"})
-    print(len(error))
+    if len(error) > 0:
+        return "ERROR"
 
     # soup.find_all returns a list of containers that include different parts of the website
     text = soup.find_all("div", {"class": "container"})
@@ -33,15 +34,11 @@ def isolateParagraph(soup):
     courseNumber = elementTag.find("h1", {"class": "m-0"}).get_text().strip() # Find the course number as text
     
     courseDesc = elementTag.find_all("p")[1].get_text().strip()     # Finds the description of the course
-    #print(courseDesc)
     
     courseInfo = courseNumber + '\n' + courseDesc
     
-    # print(courseInfo)
-    
-    #print(elementTag)
 
-    print(f"{courseInfo}\n\n")
+    #print(f"{courseInfo}\n\n")
 
     return courseInfo
 
@@ -82,5 +79,7 @@ def convertCourseCode(courseCode):
     
     soup = getContent(newUrl)
     paragraph = isolateParagraph(soup)
+    if paragraph == "ERROR":
+        return "INVALID"
     prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
     return prereqsList
