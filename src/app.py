@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request
+from mainFile import userInput
 
 
 app = Flask(__name__)
@@ -17,7 +18,10 @@ def get_data():
 def receive_data():
     data = request.get_json()  # Get the JSON data from the request
     message = data.get("message", "")
-    response = {"reply": f"Received: {message}"}
+    response = {"reply": f"Received: {userInput(message)}"}
+    
+    
+    
     return jsonify(response)
 
 if __name__ == '__main__':

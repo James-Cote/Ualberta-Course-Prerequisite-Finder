@@ -15,6 +15,21 @@ function encodeJSONData(course)
         .catch(error => console.error('Error:', error));
 }
 
+function sendData(course) {
+    fetch('/api/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: course })  // Send the message as JSON
+    })
+    .then(response => response.json())
+    .then(data => {
+        data.reply;
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 const body = document.querySelector("body");
 body.setAttribute("style", "display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0px")
 

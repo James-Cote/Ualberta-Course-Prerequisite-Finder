@@ -77,4 +77,5 @@ def main():
         print(i.name)
     #print(COURSELIST)
 
-main()
+if __name__ == '__main__':
+    main()
