@@ -16,6 +16,8 @@ BASEURL = "https://apps.ualberta.ca/catalogue/course"
 COURSELIST = []
 
 def createLayer(givenT):
+    print("givenT: ", givenT)
+
     if givenT[1] == None:
         return
     if len(givenT[1]) == 0:
@@ -43,6 +45,10 @@ def createLayer(givenT):
                 # print(paragraph)
                 # prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
                 createLayer(prereqsList)
+        elif len(course.prereqs) == 1:
+            courseCode = course.prereqs[0][0]
+            prereqsList = convertCourseCode(courseCode)
+            createLayer(prereqsList)
 
 
 def isolateParagraph(soup):
