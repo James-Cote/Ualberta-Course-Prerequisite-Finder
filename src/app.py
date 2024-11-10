@@ -21,10 +21,8 @@ def receive_data():
     print("\n\n\n\n\n\n\n\n\n\n\n")
     print(f"printing msg {message}")
     response = {"reply": message}
-
     
     createDiagram.dumpCourseToJSON(userInput(message), 'static/js/JSON/diagramData.json')
-
     
     return jsonify(response)
 

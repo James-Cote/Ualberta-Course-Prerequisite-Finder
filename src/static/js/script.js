@@ -28,7 +28,7 @@ function changeGraph() {
     .catch(error => console.error('Error loading file:', error));
   }
 
-  
+
 function sendData(course) {
     fetch('/api/data', {
         method: 'POST',
@@ -40,10 +40,11 @@ function sendData(course) {
     .then(response => response.json())
     .then(data => {
         console.log(data.reply);
+        changeGraph();
     })
     .catch(error => console.error('Error:', error));
 
-    changeGraph();
+    
 }
 
 const body = document.querySelector("body");
