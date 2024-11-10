@@ -23,9 +23,13 @@ def createLayer(givenT):
     prereqs = givenT[1] #the prereqs for the original course
 
     if courseName in COURSENAMELIST:
+        print(f"Already in the CNL: {courseName}")
         return
+    
 
     course = Course(courseName, prereqs)
+    COURSELIST.append(course)
+    COURSENAMELIST.append(courseName)
     
     for i in range(len(course.prereqs)):    # looping through all ANDs
         print("course prereqs",course.prereqs[i], "course prereqs length ",len(course.prereqs[i]))
@@ -35,16 +39,20 @@ def createLayer(givenT):
         elif len(course.prereqs[i]) > 1: #  more than one course is a prereq
             for j in range(len(course.prereqs[i])):    # looping through all ORs
                 courseCode = course.prereqs[i][j]
-                prereqsList = iFinder.convertCourseCode(courseCode) # converts the coursecode into the prereqs list of that course
-                # print("1 createlayer", prereqsList)
-                if prereqsList!='INVALID':
-                    createLayer(prereqsList)
+
+                if courseCode not in COURSENAMELIST:
+                    prereqsList = iFinder.convertCourseCode(courseCode) # converts the coursecode into the prereqs list of that course
+                    # print("1 createlayer", prereqsList)
+                    if prereqsList!='INVALID':
+                        createLayer(prereqsList)
         elif len(course.prereqs[i]) == 1: # only one course is a prereq
             courseCode = course.prereqs[0][0]
-            prereqsList = iFinder.convertCourseCode(courseCode)
-            # print("2 createlayer")
-            if prereqsList != 'INVALID':
-                createLayer(prereqsList)
+
+            if courseCode not in COURSENAMELIST:
+                prereqsList = iFinder.convertCourseCode(courseCode)
+                # print("2 createlayer")
+                if prereqsList != 'INVALID':
+                    createLayer(prereqsList)
             else:
                 return
             
@@ -53,8 +61,6 @@ def createLayer(givenT):
         else:
             print("BreakCase")
 
-    COURSELIST.append(course)
-    COURSENAMELIST.append(courseName)
 
 def userInput(name):
     COURSELIST.clear()
@@ -75,7 +81,7 @@ def main():
     
     for i in COURSELIST:
         print(i.name)
-    #print(COURSELIST)
+    print(COURSENAMELIST)
 
 if __name__ == '__main__':
     main()
