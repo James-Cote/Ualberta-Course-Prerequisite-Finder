@@ -21,7 +21,6 @@ const myDiagram =
       "themeManager.changesDivBackground": true,
       "themeManager.currentTheme": document.getElementById('theme').value
     });
-  
 
   // Creates themes
   myDiagram.themeManager.set('base', {
@@ -44,7 +43,6 @@ const myDiagram =
       ],
       text: '#FFF',
       shadow: '#9ca3af',
-      outline: "#000000",
       extra: " "
     }
   });
