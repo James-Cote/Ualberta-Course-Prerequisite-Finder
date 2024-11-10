@@ -12,8 +12,6 @@ def createLayer(givenT):
     '''
     print("givenT: ", givenT)
     # cases for if givenT is not valid
-    if not givenT:
-        return
     if givenT[1] == None:
         return
     if len(givenT[1]) == 0:
@@ -53,8 +51,8 @@ def createLayer(givenT):
                 # print("2 createlayer")
                 if prereqsList != 'INVALID':
                     createLayer(prereqsList)
-            else:
-                return
+                else:
+                    return
             
         elif len(course.prereqs[i]) == 0:
             return

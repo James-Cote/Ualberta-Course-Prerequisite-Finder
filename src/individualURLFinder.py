@@ -84,5 +84,5 @@ def convertCourseCode(courseCode):
         return 'INVALID'
     
     prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
-    print(prereqsList)
+    print(f"prereqsList: {prereqsList}")
     return prereqsList
