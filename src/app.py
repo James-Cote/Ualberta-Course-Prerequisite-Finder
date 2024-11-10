@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from mainFile import userInput
-
+import createDiagram
 
 app = Flask(__name__)
 
@@ -19,8 +19,11 @@ def receive_data():
     data = request.get_json()  # Get the JSON data from the request
     message = data.get("message", "")
     response = {"reply": f"Received: {userInput(message)}"}
+
     
+    createDiagram.dumpCourseToJSON(message, 'static/js/JSON/diagramData.json')
     
+    print(response)
     
     return jsonify(response)
 
