@@ -57,7 +57,7 @@ def nextURL(classCode: str) -> str:
     for i in range(2):
         newURL = newURL + '/' + codeList[i]
 
-    print(newURL)
+    print("TESTING TESTING" ,newURL)
     return newURL
 
 def getContent(url):
@@ -72,15 +72,16 @@ def convertCourseCode(courseCode):
     '''
         This function handles the logic to get from a course code to a prereqs list
     '''
-    newUrl = nextURL(courseCode)
+    newUrl = nextURL(courseCode)    # gets the newURL to get the data for the courseCode
+    print("IM JUST SUGGESTING",newUrl)
 
-    if newUrl == 'INVALID':
-        # print(courseCode)
-        return 'INVALID'
+    if newUrl == 'INVALID':   
+        return "INVALID"
     
     soup = getContent(newUrl)
     paragraph = isolateParagraph(soup)
     if paragraph == "ERROR":
-        return "INVALID"
+        return 'INVALID'
+    
     prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
     return prereqsList
