@@ -82,8 +82,9 @@ userInput.addEventListener('keydown', (event) => {
   });
 
 const button = document.createElement("button")
-//button.setAttribute("style", "width: 64px; height: 32px; background-color: #285D39; color: white")
+button.setAttribute("style", "width: 64px; height: 32px; color: white")
 button.setAttribute("class", "box-div")
+button.setAttribute("id", "submit")
 button.addEventListener("click", function(){
     course = document.getElementById("userInput").value
     console.log(course)
@@ -92,9 +93,25 @@ button.addEventListener("click", function(){
 })
 button.textContent = "Submit"
 
-inputs.appendChild(userInput)
-inputs.appendChild(button)
-body.appendChild(inputs)
+
+const secondRow = document.createElement("div")
+secondRow.setAttribute("style", "display: flex; justify-content: center; align-items: center")
+
+const legend = document.createElement("div")
+legend.setAttribute("style", "margin: 16px;padding: 16px; background-color: #285D39; width: 500px; height: 50px; display:flex; font-family: Verdana; color: white; font-size: 14px; display:flex; align-items: center; justify-content: center; position: absolute; left: 0")
+legend.textContent = "Classes connected with the same colour line are equivalent. You can do either one."
+
+secondRow.appendChild(legend)
+secondRow.appendChild(userInput)
+secondRow.appendChild(button)
+
+body.appendChild(secondRow)
+
+
+//body.appendChild(legend)
+//inputs.appendChild(userInput)
+//inputs.appendChild(button)
+//body.appendChild(inputs)
 
 //theme build
 theme_colors = {
@@ -120,7 +137,7 @@ footer.setAttribute("id", "footer")
 footer.setAttribute("style", "width: 100%; height: 30px; background-color: #285D39; color: white; font-size: 16px; font-family: Verdana; display: flex; align-items: center; justify-content: center")
 
 const members = document.createElement("div")
-members.textContent = "Ben Bui, Olivia Cai, Kevin Cao, James Cotey, Vinson Lou"
+members.textContent = "Ben Bui, Olivia Cai, Kevin Cao, James Cote, Vinson Lou"
 members.setAttribute("style", "cursor: pointer; color: white;")
 
 footer.appendChild(members)
