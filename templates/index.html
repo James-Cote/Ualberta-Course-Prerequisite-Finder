@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4DGoose</title>
     <link rel="stylesheet" href="../static/style.css">
+    <!-- use go-debug.js when developing and go.js when deploying -->
+    <script src="../static/js/go.js"></script>
 </head>
 <body>
     <script src="../static/js/script.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <div id="myDiagramDiv"
+     style="width: 95%; height: 600px; background-color: #DAE4E4;"></div>
+     <script src="../static/js/network.js"></script>
 </body>
 </html>
