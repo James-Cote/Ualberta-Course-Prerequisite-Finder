@@ -109,11 +109,6 @@ function changeGraph() {
   .catch(error => console.error('Error loading file:', error));
 }
 
-// function loadingGraph() {
-//   const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
-//   myDiagram.model = new go.GraphLinksModel(
-// }
-
 fetch('../static/js/JSON/diagramData.json')
   .then(response => response.json())
   .then(data => {
