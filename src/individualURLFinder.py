@@ -49,7 +49,7 @@ def nextURL(classCode: str) -> str:
         ex: classCode = 'CMPUT 201'
         returns: "https://apps.ualberta.ca/catalogue/course/CMPUT/201" 
     '''
-    codeList = classCode.split()
+    codeList = classCode.split() #ie classCode "CMPUT 174"
     if (len(codeList) != 2):
         return 'INVALID'
     
@@ -75,6 +75,7 @@ def convertCourseCode(courseCode):
     newUrl = nextURL(courseCode)
 
     if newUrl == 'INVALID':
+        # print(courseCode)
         return 'INVALID'
     
     soup = getContent(newUrl)
