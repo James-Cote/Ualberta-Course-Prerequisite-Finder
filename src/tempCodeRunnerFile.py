@@ -1,2 +1,2 @@
-if end_flag:
-                    return prereq_list  
+if not isinstance(course.prereqs, list):
+            continue
