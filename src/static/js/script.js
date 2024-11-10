@@ -25,7 +25,7 @@ function sendData(course) {
     })
     .then(response => response.json())
     .then(data => {
-        data.reply;
+        console.log(data.reply);
     })
     .catch(error => console.error('Error:', error));
 }
@@ -52,7 +52,7 @@ userInput.addEventListener('keydown', (event) => {
         course = document.getElementById("userInput").value
         console.log(course)
 
-        encodeJSONData(course)
+        sendData(course)
     }
   });
 
@@ -63,7 +63,7 @@ button.addEventListener("click", function(){
     course = document.getElementById("userInput").value
     console.log(course)
 
-    encodeJSONData(course)
+    sendData(course)
 })
 button.textContent = "Submit"
 

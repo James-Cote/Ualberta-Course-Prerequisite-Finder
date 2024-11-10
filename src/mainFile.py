@@ -68,6 +68,8 @@ def userInput(name):
     
     for i in COURSELIST:
         print(i.name)
+        
+    return COURSELIST
 
 def main():
     userInput = 'MATH 315'
