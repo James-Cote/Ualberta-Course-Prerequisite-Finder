@@ -6,8 +6,14 @@ COURSENAMELIST = []
 
 
 def createLayer(givenT):
+    '''
+    This is a function that will recursively find all of the prerequisite courses as given 
+    by givenT
+    '''
     print("givenT: ", givenT)
-
+    # cases for if givenT is not valid
+    if not givenT:
+        return
     if givenT[1] == None:
         return
     if len(givenT[1]) == 0:
@@ -23,13 +29,13 @@ def createLayer(givenT):
     
 
     for i in range(len(course.prereqs)):    # looping through all ANDs
-        if len(course.prereqs[i]) > 1:
+        if len(course.prereqs[i]) > 1: #  more than one course is a prereq
             for j in range(len(course.prereqs[i])):    # looping through all ORs
                 courseCode = course.prereqs[i][j]
-                prereqsList = iFinder.convertCourseCode(courseCode)
+                prereqsList = iFinder.convertCourseCode(courseCode) # converts the coursecode into the prereqs list of that course
                 print("1 createlayer")
                 createLayer(prereqsList)
-        elif len(course.prereqs[i]) == 1:
+        elif len(course.prereqs[i]) == 1: # only one course is a prereq
             courseCode = course.prereqs[0][0]
             prereqsList = iFinder.convertCourseCode(courseCode)
 
