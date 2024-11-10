@@ -25,6 +25,13 @@ const myDiagram =
   myDiagram.themeManager.set('base', {
     colors: {
       background: '#285D39',
+      levels: [
+        "#285D39",
+        "#396E4A",
+        "#4A7F5B",
+        "#5B8F6C",
+        "#6C9F7D",
+      ],
       text: '#FFF',
       shadow: '#9ca3af',
       outline: "#000000"
@@ -35,10 +42,25 @@ const myDiagram =
   myDiagram.themeManager.set('pretty', {
     colors: {
       background: '#DD70A9',
+      levels: [
+        "#DD70A9",
+        "#DD70A9",
+        "#DD70A9",
+        "#DD70A9",
+        "#DD70A9",
+      ],
       text: '#fff',
       shadow: '#111827',
     }
   });
+
+function findLevelColor(node) {
+  if (node.data.level > 4) {
+    return 4;
+  }
+  return node.data.level;
+}
+
 
 myDiagram.nodeTemplate =
     new go.Node("Horizontal",
@@ -59,7 +81,7 @@ myDiagram.nodeTemplate =
           spot1: go.Spot.TopLeft,
           spot2: go.Spot.BottomRight,
           outline: "#000000"
-        }).theme('fill', 'background'),
+        }).themeObject('fill', '', 'levels', findLevelColor),
         new go.TextBlock("Default Text",  // the initial value for TextBlock.text 
             // some room around the text, a larger font, and a white stroke:
             { margin: 12, font: "16px sans-serif", textAlign: "center" })
@@ -75,11 +97,28 @@ myDiagram.nodeTemplate =
         )
     ).theme('shadowColor', 'shadow');
 
+myDiagram.nodeTemplate.selectionAdornmentTemplate = new go.Adornment('Spot')
+  .add(
+    new go.Panel('Auto')
+      .add(
+        new go.Shape('RoundedRectangle', { fill: null, strokeWidth: 2 })
+        .theme("stroke", "background"),
+        new go.Placeholder() // a Placeholder sizes itself to the selected Node
+      )
+    );
+
 myDiagram.linkTemplate =
   new go.Link(
       // default routing is go.Routing.Normal
       // default corner is 0
-      { routing: go.Routing.Orthogonal, corner: 5 })
+      {
+        isShadowed: true,
+        shadowBlur: 2.5,
+        shadowOffset: new go.Point(0.5, 0.5),
+
+        routing: go.Routing.AvoidsNodes,
+        corner: 5 })
+        .bind("shadowColor", "color")
     .add(
       // the link path, a Shape
       new go.Shape({ strokeWidth: 3 })
