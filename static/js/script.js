@@ -8,34 +8,11 @@ function encodeJSONData(course)
     console.log(data)
 
     fetch('/api/data')
-    {
         .then(response => response.json())
-        .then(data => 
-        {
+        .then(data => {
             data
         })
         .catch(error => console.error('Error:', error));
-    }
-}
-
-function sendData(data) 
-{
-
-    fetch('/api/data', 
-    {
-        method: 'POST',
-        headers: 
-        {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: data })  // Send the message as JSON
-    })
-    .then(response => response.json())
-    .then(data => 
-    {
-        console.log(data.reply)
-    })
-    .catch(error => console.error('Error:', error));
 }
 
 const body = document.querySelector("body");
@@ -60,17 +37,18 @@ userInput.addEventListener('keydown', (event) => {
         course = document.getElementById("userInput").value
         console.log(course)
 
-        sendData(course)
+        encodeJSONData(course)
     }
   });
 
 const button = document.createElement("button")
-button.setAttribute("style", "width: 64px; height: 32px; background-color: #285D39; color: white")
+//button.setAttribute("style", "width: 64px; height: 32px; background-color: #285D39; color: white")
+button.setAttribute("class", "box-div")
 button.addEventListener("click", function(){
     course = document.getElementById("userInput").value
     console.log(course)
 
-    sendData(course)
+    encodeJSONData(course)
 })
 button.textContent = "Submit"
 
