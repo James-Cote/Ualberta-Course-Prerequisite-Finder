@@ -15,23 +15,63 @@ const myDiagram =
         alternateLayerSpacing: 35,
         alternateAlignment: go.TreeAlignment.Bus,
         alternateNodeSpacing: 20
-      })
+      }),
+      "themeManager.changesDivBackground": true,
+      "themeManager.currentTheme": document.getElementById('theme').value
     });
+  
+
+  // Creates themes
+  myDiagram.themeManager.set('base', {
+    colors: {
+      background: '#285D39',
+      text: '#FFF',
+      shadow: '#9ca3af'
+    }
+  });
+
+  // PRETTY
+  myDiagram.themeManager.set('pretty', {
+    colors: {
+      background: '#DD70A9',
+      text: '#fff',
+      shadow: '#111827',
+    }
+  });
 
 myDiagram.nodeTemplate =
     new go.Node("Horizontal",
     // the entire node will have a light-blue background
-    { background: "#33CC33" })
+    {
+      isShadowed: true,
+      shadowOffset: new go.Point(0, 2)
+    })
   .add(
     new go.Panel(go.Panel.Auto, { name: 'BODY', width: 150})
     .add(
+        // define the node's outer shape
+        new go.Shape('RoundedRectangle', {
+          name: 'SHAPE',
+          strokeWidth: 0,
+          fill: '#285D39',  
+          portId: '',
+          spot1: go.Spot.TopLeft,
+          spot2: go.Spot.BottomRight
+        }).theme('fill', 'background'),
         new go.TextBlock("Default Text",  // the initial value for TextBlock.text
             // some room around the text, a larger font, and a white stroke:
-            { margin: 12, stroke: "white", font: "16px sans-serif", textAlign: "center" })
+            { margin: 12, font: "16px sans-serif", textAlign: "center" })
         // TextBlock.text is data bound to the "name" property of the model data
-        .bind("text", "key"),
+        .bind("text", "key")
+        .theme("stroke", "text"),
+        new go.TextBlock("Default Text",  // the initial value for TextBlock.text
+          // some room around the text, a larger font, and a white stroke:
+          { margin: 12, font: "16px sans-serif", textAlign: "center" })
+        // TextBlock.text is data bound to the "name" property of the model data
+        .bind("text", "key")
+        .theme("stroke", "text")
         )
-    );
+    ).theme('shadowColor', 'shadow');
 
 myDiagram.linkTemplate =
   new go.Link(
@@ -46,13 +86,13 @@ myDiagram.linkTemplate =
       //new go.Shape({  toArrow: "Standard", stroke: null  })
     );
 
-// // Fetch JSON data and apply it to the model
-// fetch("diagramData.json")
-//   .then(response => response.json())
-//   .then(data => {
-//     myDiagram.model = new go.GraphLinksModel(data.nodeDataArray, data.linkDataArray);
-//   })
-//   .catch(error => console.error("Error loading JSON data:", error));
+// Change theme when button is pressed
+function changeTheme() {
+  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
+  if (myDiagram) {
+    myDiagram.themeManager.currentTheme = document.getElementById('theme').value;
+  }
+}
 
 fetch('../static/js/JSON/diagramData.json')
   .then(response => response.json())
@@ -63,18 +103,3 @@ fetch('../static/js/JSON/diagramData.json')
     );
   })
   .catch(error => console.error('Error loading file:', error));
-
-
-// myDiagram.model = new go.GraphLinksModel(
-//   [ // the nodeDataArray
-//     { key: "CMPUT 201"},
-//     { key: "CMPUT 175"}, 
-//     { key: "MATH 144"},
-//     { key: "CMPUT 179"}
-//   ],
-//   [ // the linkDataArray
-//     { from: "CMPUT 201", to: "CMPUT 175", color: "#005533" },
-//     { from: "CMPUT 201", to: "CMPUT 179", color: "#005555" },
-//     { from: "CMPUT 179", to: "MATH 144", color: "#550000" },
-//     { from: "CMPUT 175", to: "MATH 144", color: "#000055" }
-//   ]);
