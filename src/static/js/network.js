@@ -68,7 +68,7 @@ const myDiagram =
       ],
       text: '#fff',
       shadow: '#111827',
-      extra: " ♥"
+      extra: "<3"
     }
   });
 
@@ -162,25 +162,4 @@ function changeTheme() {
   }
 }
 
-function changeGraph() {
-  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
-  fetch('../static/js/JSON/diagramData.json')
-  .then(response => response.json())
-  .then(data => {
-    console.log(data),
-    myDiagram.model = new go.GraphLinksModel(
-      data[0], data[1]
-    );
-  })
-  .catch(error => console.error('Error loading file:', error));
-}
-
-fetch('../static/js/JSON/diagramData.json')
-  .then(response => response.json())
-  .then(data => {
-    console.log(data),
-    myDiagram.model = new go.GraphLinksModel(
-      data[0], data[1]
-    );
-  })
-  .catch(error => console.error('Error loading file:', error));
+myDiagram.model = new go.GraphLinksModel([{"key":"Enter a Course :D"}],[]);
