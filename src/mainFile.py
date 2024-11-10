@@ -12,14 +12,16 @@ def createLayer(givenT):
     '''
     print("givenT: ", givenT)
     # cases for if givenT is not valid
-    if givenT[1] == None:
-        return
-    if len(givenT[1]) == 0:
-        return
 
     courseName = givenT[0] #original course
     prereqs = givenT[1] #the prereqs for the original course
 
+    if givenT[1] == None:
+        course = Course(courseName, prereqs)
+        COURSELIST.append(course)
+        COURSENAMELIST.append(courseName)
+        return
+    
     if courseName in COURSENAMELIST:
         print(f"Already in the CNL: {courseName}")
         return
@@ -72,7 +74,7 @@ def userInput(name):
     return COURSELIST
 
 def main():
-    userInput = 'MATH 315'
+    userInput = 'PHYS 208'
 
     prereqsList = iFinder.convertCourseCode(userInput)
     # print("4 createlayer")
