@@ -75,7 +75,8 @@ def convertCourseCode(courseCode):
     newUrl = nextURL(courseCode)    # gets the newURL to get the data for the courseCode
     print("IM JUST SUGGESTING",newUrl)
 
-    if newUrl == 'INVALID':   
+    if newUrl == 'INVALID': 
+        print("RETURINGING INVALID URL")  
         return "INVALID"
     
     soup = getContent(newUrl)
@@ -84,4 +85,5 @@ def convertCourseCode(courseCode):
         return 'INVALID'
     
     prereqsList = GetPrereqCorereq.getPrereqs(paragraph)
+    print("AAAAAAAAAAAAAAAAAAAAAA",prereqsList)
     return prereqsList
