@@ -1,5 +1,20 @@
 let course = ""
 
+function encodeJSONData(course)
+{
+    // JSON Encode the data
+    data = {name: course}
+
+    console.log(data)
+
+    fetch('/api/data')
+        .then(response => response.json())
+        .then(data => {
+            data
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 const body = document.querySelector("body");
 body.setAttribute("style", "display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0px")
 
@@ -21,6 +36,8 @@ userInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         course = document.getElementById("userInput").value
         console.log(course)
+
+        encodeJSONData(course)
     }
   });
 
@@ -29,6 +46,8 @@ button.setAttribute("style", "width: 64px; height: 32px; background-color: #285D
 button.addEventListener("click", function(){
     course = document.getElementById("userInput").value
     console.log(course)
+
+    encodeJSONData(course)
 })
 button.textContent = "Submit"
 

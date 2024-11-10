@@ -19,7 +19,10 @@ def isolateParagraph(soup):
         looks through the html file and finds "containers"
         Returns the course name and its course description for parsing
     '''
-    
+    # Look for any errors
+    error = soup.find_all("h4", {"class": "alert-heading"})
+    print(len(error))
+
     # soup.find_all returns a list of containers that include different parts of the website
     text = soup.find_all("div", {"class": "container"})
     #elementTag =  text[3].get_text() #container at text[3] contains the paragraph we want
