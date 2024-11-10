@@ -26,7 +26,8 @@ const myDiagram =
     colors: {
       background: '#285D39',
       text: '#FFF',
-      shadow: '#9ca3af'
+      shadow: '#9ca3af',
+      outline: "#000000"
     }
   });
 
@@ -47,7 +48,7 @@ myDiagram.nodeTemplate =
       shadowOffset: new go.Point(0, 2)
     })
   .add(
-    new go.Panel(go.Panel.Auto, { name: 'BODY', width: 150})
+    new go.Panel(go.Panel.Auto, { name: 'BODY', width: 150, dragSelect: null})
     .add(
         // define the node's outer shape
         new go.Shape('RoundedRectangle', {
@@ -56,9 +57,10 @@ myDiagram.nodeTemplate =
           fill: '#285D39',  
           portId: '',
           spot1: go.Spot.TopLeft,
-          spot2: go.Spot.BottomRight
+          spot2: go.Spot.BottomRight,
+          outline: "#000000"
         }).theme('fill', 'background'),
-        new go.TextBlock("Default Text",  // the initial value for TextBlock.text
+        new go.TextBlock("Default Text",  // the initial value for TextBlock.text 
             // some room around the text, a larger font, and a white stroke:
             { margin: 12, font: "16px sans-serif", textAlign: "center" })
         // TextBlock.text is data bound to the "name" property of the model data
@@ -93,6 +95,24 @@ function changeTheme() {
     myDiagram.themeManager.currentTheme = document.getElementById('theme').value;
   }
 }
+
+function changeGraph() {
+  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
+  fetch('../static/js/JSON/diagramData.json')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data),
+    myDiagram.model = new go.GraphLinksModel(
+      data[0], data[1]
+    );
+  })
+  .catch(error => console.error('Error loading file:', error));
+}
+
+// function loadingGraph() {
+//   const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
+//   myDiagram.model = new go.GraphLinksModel(
+// }
 
 fetch('../static/js/JSON/diagramData.json')
   .then(response => response.json())
