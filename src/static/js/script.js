@@ -15,6 +15,20 @@ function encodeJSONData(course)
         .catch(error => console.error('Error:', error));
 }
 
+function changeGraph() {
+    const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
+    fetch('../static/js/JSON/diagramData.json')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data),
+      myDiagram.model = new go.GraphLinksModel(
+        data[0], data[1]
+      );
+    })
+    .catch(error => console.error('Error loading file:', error));
+  }
+
+  
 function sendData(course) {
     fetch('/api/data', {
         method: 'POST',
@@ -28,6 +42,8 @@ function sendData(course) {
         console.log(data.reply);
     })
     .catch(error => console.error('Error:', error));
+
+    changeGraph();
 }
 
 const body = document.querySelector("body");

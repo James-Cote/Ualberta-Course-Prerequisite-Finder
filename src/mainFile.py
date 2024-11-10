@@ -74,6 +74,7 @@ def userInput(name):
     return COURSELIST
 
 def main():
+
     userInput = 'MATH 315'
 
     prereqsList = iFinder.convertCourseCode(userInput)
@@ -84,6 +85,7 @@ def main():
     for i in COURSELIST:
         print(i.name)
     print(COURSENAMELIST)
-
+    
+    
 if __name__ == '__main__':
     main()

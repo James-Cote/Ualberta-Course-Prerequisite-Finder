@@ -96,7 +96,7 @@ function changeTheme() {
   }
 }
 
-export function changeGraph() {
+function changeGraph() {
   const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
   fetch('../static/js/JSON/diagramData.json')
   .then(response => response.json())
