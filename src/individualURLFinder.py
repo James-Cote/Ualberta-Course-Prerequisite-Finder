@@ -51,7 +51,6 @@ def nextURL(classCode: str) -> str:
     '''
     codeList = classCode.split()
     if (len(codeList) != 2):
-        print("invalid course")
         return 'INVALID'
     
     newURL = BASEURL

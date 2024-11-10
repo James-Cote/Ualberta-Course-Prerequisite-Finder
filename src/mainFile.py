@@ -27,13 +27,17 @@ def createLayer(givenT):
                 courseCode = course.prereqs[i][j]
                 prereqsList = iFinder.convertCourseCode(courseCode)
                 createLayer(prereqsList)
-        elif len(course.prereqs) == 1:
+        elif len(course.prereqs[i]) == 1:
             courseCode = course.prereqs[0][0]
             prereqsList = iFinder.convertCourseCode(courseCode)
 
             if prereqsList == 'INVALID':
                 return
             createLayer(prereqsList)
+        elif len(course.prereqs[i]) == 0:
+            return
+        else:
+            print("BreakCase")
 
 
 def main():
