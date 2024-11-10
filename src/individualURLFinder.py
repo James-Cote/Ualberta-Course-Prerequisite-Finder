@@ -73,7 +73,6 @@ def convertCourseCode(courseCode):
         This function handles the logic to get from a course code to a prereqs list
     '''
     newUrl = nextURL(courseCode)    # gets the newURL to get the data for the courseCode
-    print(newUrl)
 
     if newUrl == 'INVALID': 
         print("RETURINGING INVALID URL")  
