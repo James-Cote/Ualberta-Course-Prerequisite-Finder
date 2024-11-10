@@ -76,6 +76,7 @@ def userInput(name):
 def main():
 
     userInput = 'MATH 315'
+    
 
     prereqsList = iFinder.convertCourseCode(userInput)
     # print("4 createlayer")
