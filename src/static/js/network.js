@@ -162,4 +162,4 @@ function changeTheme() {
   }
 }
 
-myDiagram.model = new go.GraphLinksModel([{"key":"Enter a Course :D"}],[]);
+myDiagram.model = new go.GraphLinksModel([{"key":"Enter a Course :D", "level":0}],[]);

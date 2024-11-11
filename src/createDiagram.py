@@ -20,10 +20,10 @@ def dumpCourseToJSON(course_list, json_file):
             continue
 
         print(i_course.name, "prereqs", i_course.prereqs, type(i_course.prereqs))
-        if (not isinstance(i_course.prereqs[0], list)):
-            continue
 
         for colors in i_course.prereqs:
+            if (type(colors) != list):
+                continue
             for j_course in colors:
                 # Add all connections to the link data file
                 linkDataArray.append({"from":i_course.name, "to":j_course, "line_color":color_i})
