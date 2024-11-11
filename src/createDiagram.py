@@ -5,17 +5,37 @@ def dumpCourseToJSON(course_list, json_file):
     nodeDataArray = []
     linkDataArray = []
 
-    # Find the corresponding level
-    node_level = {}
-
     # Fancy Colors
     color_i = 0
 
+    # Make the map to apply topological sort
+    course_map = {}
     for i_course in course_list:
-        # Adding to level dictionary
-        if (i_course.name not in node_level):
-            node_level[i_course.name] = 0
+        course_map[i_course.name] = i_course
 
+    # Make a queue with the level attached
+    course_queue = [[course_list[0].name, 0]]
+    # Save nodes in cache
+    course_viewed = set()
+
+    for q_course in course_queue:
+        # Check the cache
+        if (q_course[0] in course_viewed):
+            continue
+        course_viewed.add(q_course[0])
+        
+        # Add to Array
+        print("NODE DATA ADDED: ", q_course[0], q_course[1])
+        nodeDataArray.append({"key":q_course[0], "level":q_course[1]})
+        
+        # Get the course
+        print("Q Course:", q_course[0])
+        try:
+            i_course = course_map[q_course[0]]
+        except:
+            i_course = Course(q_course[0], [])
+
+        # Prereq
         if (i_course.prereqs == None or len(i_course.prereqs) == 0):
             continue
 
@@ -27,25 +47,15 @@ def dumpCourseToJSON(course_list, json_file):
             for j_course in colors:
                 # Add all connections to the link data file
                 linkDataArray.append({"from":i_course.name, "to":j_course, "line_color":color_i})
-                # Level Calculation
-                if (j_course in node_level):
-                    if (node_level[i_course.name] >= node_level[j_course]):
-                        node_level[j_course] = node_level[i_course.name] + 1
-                else:
-                    node_level[j_course] = node_level[i_course.name] + 1
+                # Add to the queue
+                course_queue.append([j_course, q_course[1] + 1])
             # Next color group (finished this or fucntionality)
             color_i = color_i + 1
-
-
-    # Make Node Array based on level
-    mapped_nodes = list(node_level.items())
-    mapped_nodes.sort(key = lambda x: x[1])
-    print(mapped_nodes)
-    for i_node in mapped_nodes:
-        nodeDataArray.append({"key":i_node[0], "level":i_node[1]}) 
     
     # Write the JSON file
     write_file = open(json_file, 'w')
+
+    print("final node data:", nodeDataArray)
 
     all_data = [nodeDataArray, linkDataArray]
     write_file.write(json.dumps(all_data))
