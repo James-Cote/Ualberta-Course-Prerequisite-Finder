@@ -55,8 +55,6 @@ function sendData(course) {
         changeGraph();
     })
     .catch(error => console.error('Error:', error));
-
-    
 }
 
 const body = document.querySelector("body");

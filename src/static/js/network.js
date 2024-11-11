@@ -83,6 +83,16 @@ function findStrokeColor(link) {
   return link.data.line_color % 6;
 }
 
+// Visible Node Changer
+var visible_levels = 100;
+function findVisibleLevel(node) {
+  console.log(visible_levels);
+  if (node.level > visible_levels) {
+    return false;
+  }
+  return true;
+}
+
 myDiagram.nodeTemplate =
     new go.Node("Horizontal",
     // the entire node will have a light-blue background
@@ -90,6 +100,7 @@ myDiagram.nodeTemplate =
       isShadowed: true,
       shadowOffset: new go.Point(0, 2)
     })
+  .bind("visible", "", findVisibleLevel)
   .add(
     new go.Panel(go.Panel.Auto, {
       name: 'BODY',
@@ -156,10 +167,17 @@ myDiagram.linkTemplate =
 
 // Change theme when button is pressed
 function changeTheme() {
-  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
   if (myDiagram) {
     myDiagram.themeManager.currentTheme = document.getElementById('theme').value;
   }
+}
+
+// Change the level you see
+function changeLevelView() {
+  visible_levels = parseInt(document.getElementById('level-chooser').value);
+  myDiagram.updateAllTargetBindings();
+  // loadingGraph();
+  // refreshDiagram();
 }
 
 myDiagram.model = new go.GraphLinksModel([{"key":"Enter a Course :D", "level":0}],[]);
