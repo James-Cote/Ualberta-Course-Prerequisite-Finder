@@ -9,8 +9,6 @@ from IndividualPara import isolateParagraph
 from courseClass import Course
 import GetPrereqCorereq
 
-import GetPrereqCorereq
-
 BASEURL = "https://apps.ualberta.ca/catalogue/course" 
 
 
@@ -53,9 +51,7 @@ def nextURL(classCode: str) -> str:
     if (len(codeList) != 2):
         return 'INVALID'
     
-    newURL = BASEURL
-    for i in range(2):
-        newURL = newURL + '/' + codeList[i]
+    newURL = BASEURL + '/' + codeList[0] + '/' + codeList[1]
 
     print(newURL)
     return newURL
