@@ -69,11 +69,27 @@ banner.setAttribute("style",
 banner.textContent = "Course Prerequisite Finder"
 body.appendChild(banner);
 
-const inputs = document.createElement("div")
-inputs.setAttribute("style", "display: flex; align-items: center")
+
+
+
+
+
+const secondRow = document.createElement("div")
+secondRow.setAttribute("style", "display: flex; justify-content: space-between; align-items: center; width: 100%;");
+secondRow.setAttribute("id", "secondRow")
+const left = document.createElement("div")
+const middle = document.createElement("div")
+const right = document.createElement("div")
+
+
+const legend = document.createElement("div")
+legend.setAttribute("style", "margin: 16px; padding: 16px; background-color: #285D39; width: 350px; height: 50px; display:flex; font-family: Verdana; color: white; font-size: 14px; display:flex; align-items: center; justify-content: center;")
+legend.setAttribute("class", "box-div")
+legend.textContent = "Classes connected with the same colour line are equivalent. You can do either one to progress to the next course."
+left.appendChild(legend)
 
 const userInput = document.createElement("input")
-userInput.setAttribute("style","margin:16px; height: 32px; width: 200px;")
+userInput.setAttribute("style","margin:16px 16px 16px -128px; height: 32px; width: 200px;")
 userInput.setAttribute("id", "userInput")
 userInput.setAttribute("type","text")
 userInput.setAttribute("placeholder", "Example: 'CMPUT 101'")
@@ -85,7 +101,6 @@ userInput.addEventListener('keydown', (event) => {
         sendData(course)
     }
   });
-
 const button = document.createElement("button")
 button.setAttribute("style", "width: 64px; height: 32px; color: white")
 button.setAttribute("class", "box-div")
@@ -98,25 +113,55 @@ button.addEventListener("click", function(){
 })
 button.textContent = "Submit"
 
+const inputs = document.createElement("div")
+inputs.setAttribute("style", "margin:16px;display: flex; align-items: center; justify-content: center")
 
-const secondRow = document.createElement("div")
-secondRow.setAttribute("style", "display: flex; justify-content: center; align-items: center")
+inputs.appendChild(userInput)
+inputs.appendChild(button)
+middle.appendChild(inputs)
 
-const legend = document.createElement("div")
-legend.setAttribute("style", "margin: 16px;padding: 16px; background-color: #285D39; width: 500px; height: 50px; display:flex; font-family: Verdana; color: white; font-size: 14px; display:flex; align-items: center; justify-content: center; position: absolute; left: 0")
-legend.textContent = "Classes connected with the same colour line are equivalent. You can do either one."
+// Create the main div with the class "box-div" and inline style
+const themeContainer = document.createElement("div");
+themeContainer.setAttribute("style","margin:16px")
+themeContainer.setAttribute("class", "box-div")
 
-secondRow.appendChild(legend)
-secondRow.appendChild(userInput)
-secondRow.appendChild(button)
+// Create the <p> element with the class "theme-select" and text content "Theme: "
+const themeLabel = document.createElement("p");
+themeLabel.classList.add("theme-select");
+themeLabel.textContent = "Theme: ";
+
+// Create the <select> element with the class "theme-box", id "theme", and onchange attribute
+const themeSelect = document.createElement("select");
+themeSelect.classList.add("theme-box");
+themeSelect.id = "theme";
+themeSelect.setAttribute("onchange", "changeTheme(), changeMainTheme()");
+
+// Create the "Base" option element
+const baseOption = document.createElement("option");
+baseOption.value = "base";
+baseOption.selected = true;
+baseOption.textContent = "Base";
+
+// Create the "Pretty" option element
+const prettyOption = document.createElement("option");
+prettyOption.value = "pretty";
+prettyOption.textContent = "Pretty";
+
+// Append the options to the select element
+themeSelect.appendChild(baseOption);
+themeSelect.appendChild(prettyOption);
+
+// Append the label and select elements to the main div
+themeContainer.appendChild(themeLabel);
+themeContainer.appendChild(themeSelect);
+
+right.appendChild(themeContainer)
+
+secondRow.appendChild(left)
+secondRow.appendChild(middle)
+secondRow.appendChild(right)
 
 body.appendChild(secondRow)
-
-
-//body.appendChild(legend)
-//inputs.appendChild(userInput)
-//inputs.appendChild(button)
-//body.appendChild(inputs)
 
 //theme build
 theme_colors = {
@@ -135,7 +180,6 @@ function changeMainTheme() {
       element.style.backgroundColor = theme_colors[document.getElementById('theme').value];;
   });
 }
-
 
 const footer = document.createElement("div")
 footer.setAttribute("id", "footer")
