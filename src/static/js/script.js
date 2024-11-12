@@ -59,9 +59,24 @@ function sendData(course) {
     
 }
 
+//make variable theme
+function changeMainTheme() {
+  banner.style.backgroundColor = theme_colors[document.getElementById('theme').value];
+
+  // box-div elements
+  const elements = document.querySelectorAll(".box-div");
+
+  elements.forEach(element => {
+      element.style.backgroundColor = theme_colors[document.getElementById('theme').value];;
+  });
+}
+
 const body = document.querySelector("body");
 body.setAttribute("style", "display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0px")
 
+////////////////////////////////////////////////
+// BANNER //////////////////////////////////////
+////////////////////////////////////////////////
 const banner = document.createElement("div");
 banner.setAttribute("style", 
     "width: 100%; height: 100px; background-color: #285D39; box-shadow: 3px 3px 3px #CCCCCC; color: white; font-size: 48px; font-family: Verdana; display: flex; align-items: center; justify-content: center; margin-top: 0px")
@@ -69,10 +84,9 @@ banner.setAttribute("style",
 banner.textContent = "Course Prerequisite Finder"
 body.appendChild(banner);
 
-
-
-
-
+////////////////////////////////////////////////
+// SECOND ROW //////////////////////////////////
+////////////////////////////////////////////////
 
 const secondRow = document.createElement("div")
 secondRow.setAttribute("style", "display: flex; justify-content: space-between; align-items: center; width: 100%;");
@@ -81,13 +95,14 @@ const left = document.createElement("div")
 const middle = document.createElement("div")
 const right = document.createElement("div")
 
-
+// LEGEND /////////////////////////////////////
 const legend = document.createElement("div")
 legend.setAttribute("style", "margin: 16px; padding: 16px; background-color: #285D39; width: 350px; height: 50px; display:flex; font-family: Verdana; color: white; font-size: 14px; display:flex; align-items: center; justify-content: center;")
 legend.setAttribute("class", "box-div")
 legend.textContent = "Classes connected with the same colour line are equivalent. You can do either one to progress to the next course."
 left.appendChild(legend)
 
+// USER INPUTS ////////////////////////////////
 const userInput = document.createElement("input")
 userInput.setAttribute("style","margin:16px 16px 16px -128px; height: 32px; width: 200px;")
 userInput.setAttribute("id", "userInput")
@@ -120,41 +135,42 @@ inputs.appendChild(userInput)
 inputs.appendChild(button)
 middle.appendChild(inputs)
 
-// Create the main div with the class "box-div" and inline style
-const themeContainer = document.createElement("div");
+// THEME SELECTOR /////////////////////////////////////
+// Div container to hold selector and wording
+const themeContainer = document.createElement("div")
 themeContainer.setAttribute("style","margin:16px")
 themeContainer.setAttribute("class", "box-div")
 
-// Create the <p> element with the class "theme-select" and text content "Theme: "
-const themeLabel = document.createElement("p");
-themeLabel.classList.add("theme-select");
+// Wording
+const themeLabel = document.createElement("p")
+themeLabel.setAttribute("class", "theme-select")
 themeLabel.textContent = "Theme: ";
 
-// Create the <select> element with the class "theme-box", id "theme", and onchange attribute
-const themeSelect = document.createElement("select");
-themeSelect.classList.add("theme-box");
-themeSelect.id = "theme";
-themeSelect.setAttribute("onchange", "changeTheme(), changeMainTheme()");
+// Selector
+const themeSelect = document.createElement("select")
+themeSelect.setAttribute("class", "theme-box")
+themeSelect.id = "theme"
+themeSelect.setAttribute("onchange", "changeTheme(), changeMainTheme()")
 
-// Create the "Base" option element
-const baseOption = document.createElement("option");
-baseOption.value = "base";
-baseOption.selected = true;
-baseOption.textContent = "Base";
+// Base option
+const baseOption = document.createElement("option")
+baseOption.value = "base"
+baseOption.selected = true
+baseOption.textContent = "Green"
 
-// Create the "Pretty" option element
-const prettyOption = document.createElement("option");
-prettyOption.value = "pretty";
-prettyOption.textContent = "Pretty";
+// Pretty pink option
+const prettyOption = document.createElement("option")
+prettyOption.value = "pretty"
+prettyOption.textContent = "Pink"
 
 // Append the options to the select element
-themeSelect.appendChild(baseOption);
-themeSelect.appendChild(prettyOption);
+themeSelect.appendChild(baseOption)
+themeSelect.appendChild(prettyOption)
 
-// Append the label and select elements to the main div
-themeContainer.appendChild(themeLabel);
-themeContainer.appendChild(themeSelect);
-
+// Append the label and select elements to the container div
+themeContainer.appendChild(themeLabel)
+themeContainer.appendChild(themeSelect)
+// Append container div to the right side div
 right.appendChild(themeContainer)
 
 secondRow.appendChild(left)
@@ -169,27 +185,58 @@ theme_colors = {
   "pretty":"#DD70A9"
 }
 
-//make variable theme
-function changeMainTheme() {
-  banner.style.backgroundColor = theme_colors[document.getElementById('theme').value];
+////////////////////////////////////////////////
+// DIAGRAM    //////////////////////////////////
+////////////////////////////////////////////////
 
-  // box-div elements
-  const elements = document.querySelectorAll(".box-div");
+let myDiagramDiv = document.createElement("div")
+myDiagramDiv.setAttribute("id", "myDiagramDiv")
+myDiagramDiv.setAttribute("style", "width: 95%; height: 600px; background-color: #DAE4E4; border-radius: 20px; border-style: solid; border-color: black")
 
-  elements.forEach(element => {
-      element.style.backgroundColor = theme_colors[document.getElementById('theme').value];;
-  });
-}
+body.appendChild(myDiagramDiv)
+
+////////////////////////////////////////////////
+// FOOTER     //////////////////////////////////
+////////////////////////////////////////////////
 
 const footer = document.createElement("div")
 footer.setAttribute("id", "footer")
-footer.setAttribute("style", "width: 100%; height: 30px; background-color: #285D39; color: white; font-size: 16px; font-family: Verdana; display: flex; align-items: center; justify-content: center")
+footer.setAttribute("style", "margin: 16px 16px 0 16px; padding: 8px; width: 100%; height: 50px; background-color: #285D39; color: white; font-size: 16px; font-family: Verdana; display: flex; flex-direction: column; align-items: center; justify-content: center;")
 footer.setAttribute("class", "box-div")
 
+const plugMessage = document.createElement("div")
+plugMessage.setAttribute("style", "color: white; font-family: Verdana")
+plugMessage.textContent = "Check out our github profiles by clicking our names below!"
+footer.appendChild(plugMessage)
 
-const members = document.createElement("div")
-members.textContent = "Ben Bui, Olivia Cai, Kevin Cao, James Cote, Vinson Lou"
-members.setAttribute("style", "cursor: pointer; color: white;")
+// MEMBER LIST
+const members = document.createElement("div");
+members.setAttribute("style", "width: 100%; display:flex; justify-content:space-around; align-items: center");
+
+// Member data array
+const memberData = [
+  { name: "Ben Bui", url: "https://github.com/maggiSauce" },
+  { name: "Olivia Cai", url: "https://github.com/olivecai" },
+  { name: "Kevin Cao", url: "https://github.com/ConnorMcDonalds97" },
+  { name: "James Cote", url: "https://github.com/James-Cote" },
+  { name: "Vinson Lou", url: "https://github.com/Enagarii" }
+];
+
+// Loop through member data and create elements
+memberData.forEach(member => {
+  const anchor = document.createElement("a");
+  anchor.setAttribute("class", "memberNameLink");
+  anchor.setAttribute("href", member.url);
+  anchor.setAttribute("style", "cursor: pointer; color: white; text-decoration: none");
+  anchor.setAttribute("target", "_blank");
+  anchor.setAttribute("rel", "noopener noreferrer");
+  anchor.textContent = member.name;
+
+  members.appendChild(anchor);
+});
+
+// Append the member list to the document
+document.body.appendChild(members);
 
 footer.appendChild(members)
 body.appendChild(footer)
