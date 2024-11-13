@@ -68,9 +68,11 @@ class Stack:
 def course_code(parent_text):
      #parent_text=parent_course.split()
     #get the course code
+    parent_text = parent_text.replace(" ", "_")
+    # print("PARENT TEXT:", parent_text)
     for idx in range(len(parent_text)):
         if parent_text[idx].isdigit():  #find the first number in the text, which is the course number
-            parent_code = parent_text[:idx+3]
+            parent_code = parent_text[:idx-1] + " " + parent_text[idx:idx+3]
             return parent_code
 
 def remove_punctuation(word):
@@ -93,14 +95,14 @@ def course_codes_list(prereq_string):
     [MATH 100, MATH 114, MATH 117, MATH 134, MATH 144, MATH 154],
     [STAT 151, STAT 161, STAT 181, STAT 235, STAT 265, SCI 151, MATH 181]]
     '''
-    prereq_list=[]
-    prereq_string=prereq_string.replace("and",";")
-    prereq_or=prereq_string.split(";") #take our list of prereqs and separate them by the ";"
-    coursename_stack=Stack() #have a stack of coursenames renewed for each group of sibling courses
-    for siblings_line in prereq_or: 
-        siblings=[]
-        siblings_line=siblings_line.split()
-        course_name=""
+    prereq_list = []
+    prereq_string = prereq_string.replace("and",";")
+    prereq_or = prereq_string.split(";") #take our list of prereqs and separate them by the ";"
+    coursename_stack = Stack() #have a stack of coursenames renewed for each group of sibling courses
+    for siblings_line in prereq_or:
+        siblings = []
+        siblings_line = siblings_line.split()
+        course_name = ""
         for word in siblings_line:
             word, end_flag=remove_punctuation(word)
             if end_flag:
@@ -108,23 +110,24 @@ def course_codes_list(prereq_string):
 
             if word.isupper(): #do this--we can't simply say uppercase => course code; some courses are two words, ie "MA PH"
                 if course_name:
-                    course_name+=" "+word
+                    course_name += "_"+word
                 else:
-                    course_name+=word
-                coursename_stack.push(course_name)
+                    course_name += word
 
             if (word.isdigit()):
                 #  every time we encounter a course code, push to stack. 
                 #  That way, if we have courses with no course code, just peek to the stack
-                course_name="" #clear the course code
-                course_num=word #duh, because word is a digit.
-                course_code=""
+                if (course_name):
+                    coursename_stack.push(course_name)
+                course_name = "" #clear the course code
+                course_num = word #duh, because word is a digit.
+                course_code = ""
                 try:
-                    course_code = coursename_stack.peektop()+" "+course_num #peek to the top of the stack!
+                    course_code = coursename_stack.peektop() + " " + course_num #peek to the top of the stack!
                 except:
                     pass
                 if course_code:
-                    siblings.append(course_code) 
+                    siblings.append(course_code)
             
             if end_flag:
                 if not siblings:
@@ -165,8 +168,9 @@ def getPrereqs(coursetext):
     Inputs: parent_text (a huge block of text that includes the course name and description, type str)
     Outputs: a string, two lists in a tuple
     '''
-    code=course_code(coursetext)
-    prereqlist=(prereqs(coursetext))
+    code = course_code(coursetext)
+    prereqlist = (prereqs(coursetext))
+    # print("THE PREREQLIST", code, prereqlist)
     return code, prereqlist
 
 

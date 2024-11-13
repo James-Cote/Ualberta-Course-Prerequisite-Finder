@@ -65,6 +65,17 @@ def createLayer(givenT):
 def userInput(name):
     COURSELIST.clear()
     COURSENAMELIST.clear()
+    
+    name = name.strip()
+
+    # Replace the space with underscore
+    name = name.replace(" ", "_")
+    for char_i in range(len(name)):
+        if (name[char_i].isdigit()):
+            name = name[:char_i-1] + " " + name[char_i:char_i+3]
+            break
+
+    print("THE NAME: ", name)
     prereqsList = iFinder.convertCourseCode(name)
     # print("3 createlayer")
     createLayer(prereqsList)

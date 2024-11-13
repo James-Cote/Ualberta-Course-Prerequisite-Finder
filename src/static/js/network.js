@@ -42,6 +42,7 @@ const myDiagram =
         "#DEDE32"
       ],
       text: '#FFF',
+      hover: '#9999FF',
       shadow: '#9ca3af',
       extra: " "
     }
@@ -67,6 +68,7 @@ const myDiagram =
         "#FFB6C1"
       ],
       text: '#fff',
+      hover: '#FFD0DB',
       shadow: '#111827',
       extra: "<3"
     }
@@ -83,20 +85,53 @@ function findStrokeColor(link) {
   return link.data.line_color % 6;
 }
 
+// Visible Node Changer
+var visible_levels = 100;
+function findVisibleLevel(node) {
+  if (node.level > visible_levels) {
+    return false;
+  }
+  return true;
+}
+
+// Add link to catalog
+function makeCatalogElement(node) {
+  console.log(node);
+  // if (node.catalog == "") return new go.Panel();
+  return new go.Panel(go.Panel.Table, {
+    column: 1,
+    cursor: 'Pointer',
+    click: (e, obj) => {
+      console.log(node.catalog);
+    }
+  })
+  .add(
+    new go.TextBlock(
+      {
+        stroke: "#FFFFFF",
+        font: "14px sans-serif",
+        text: "View Catalog",
+        margin: new go.Margin(0, 0, 10, 0)
+      })
+  );
+}
+
 myDiagram.nodeTemplate =
-    new go.Node("Horizontal",
-    // the entire node will have a light-blue background
+    new go.Node("Auto",
     {
       isShadowed: true,
       shadowOffset: new go.Point(0, 2)
     })
+  .bind("visible", "", findVisibleLevel)
   .add(
-    new go.Panel(go.Panel.Auto, {
-      name: 'BODY',
-      width: 150,
-      dragSelect: null
-    })
+    new go.Panel(go.Panel.Horizontal)
     .add(
+      new go.Panel(go.Panel.Auto, {
+          name: 'BODY',
+          width: 150,
+          dragSelect: null
+      })
+      .add(
         // define the node's outer shape
         new go.Shape('RoundedRectangle', {
           name: 'SHAPE',
@@ -105,24 +140,51 @@ myDiagram.nodeTemplate =
           portId: '',
           spot1: go.Spot.TopLeft,
           spot2: go.Spot.BottomRight,
-          outline: "#000000"
         }).themeObject('fill', '', 'levels', findLevelColor),
 
-        new go.TextBlock("Default Text",  // the initial value for TextBlock.text 
-            // some room around the text, a larger font, and a white stroke:
-            { margin: 12, font: "16px sans-serif", textAlign: "center" })
-        // TextBlock.text is data bound to the "name" property of the model data
-        .bind("text", "key")
-        .theme("stroke", "text")
-    ).theme('shadowColor', 'shadow'),
+        new go.Panel(go.Panel.Vertical)
+        .add(
+          //.add(new go.Panel("Vertical")
+          new go.TextBlock("Default Text",  // the initial value for TextBlock.text 
+              // some room around the text, a larger font, and a white stroke:
+              { margin: 12, font: "16px sans-serif", textAlign: "center" })
+          // TextBlock.text is data bound to the "name" property of the model data
+          .bind("text", "key")
+          .theme("stroke", "text"),
 
-    new go.TextBlock("Default Text",  // the initial value for TextBlock.text
-      // some room around the text, a larger font, and a white stroke:
-      { bold: true, font: "16px sans-serif", textAlign: "left", })
-    // TextBlock.text is data bound to the "name" property of the model data
-    .theme("text", "extra")
-    .theme("stroke", "background")
-  );
+          new go.Panel(go.Panel.Table, {
+            cursor: 'Pointer',
+            click: (e, obj) => {
+              window.open(obj.part.data.catalog, '_blank')
+            }
+          }).bind("visible", "catalog", c => c ? true : false)
+          .add(
+            new go.TextBlock(
+              {
+                stroke: "#FFFFFF",
+                font: "14px sans-serif",
+                text: "View Catalog",
+                margin: new go.Margin(0, 0, 10, 0),
+                mouseEnter: (e, obj) => {
+                  const localManager = obj.diagram.themeManager;
+                  obj.stroke = localManager.findTheme(localManager.currentTheme)["colors"]["hover"];  // Change to hover color
+                },
+                mouseLeave: (e, obj) => {
+                  const localManager = obj.diagram.themeManager;
+                  obj.stroke = localManager.findTheme(localManager.currentTheme)["colors"]["text"];  // Reset to original color
+                }
+              })
+          )
+        )
+      ),
+
+      new go.TextBlock("Default Text",  // the initial value for TextBlock.text
+        // some room around the text, a larger font, and a white stroke:
+        { bold: true, font: "16px sans-serif" })
+      // TextBlock.text is data bound to the "name" property of the model data
+      .theme("text", "extra")
+      .theme("stroke", "background")
+  ));
 
 myDiagram.nodeTemplate.selectionAdornmentTemplate = new go.Adornment('Spot')
   .add(
@@ -146,7 +208,7 @@ myDiagram.linkTemplate =
         routing: go.Routing.AvoidsNodes,
         corner: 5 })
         .themeObject('shadowColor', '', 'stroke_lines', findStrokeColor)
-    .add(
+    .add( 
       // the link path, a Shape
       new go.Shape({ strokeWidth: 3 })
       .themeObject('stroke', '', 'stroke_lines', findStrokeColor)
@@ -156,10 +218,15 @@ myDiagram.linkTemplate =
 
 // Change theme when button is pressed
 function changeTheme() {
-  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
   if (myDiagram) {
     myDiagram.themeManager.currentTheme = document.getElementById('theme').value;
   }
 }
 
-myDiagram.model = new go.GraphLinksModel([{key:"Enter a Course :D", level:0}],[]);
+// Change the level you see
+function changeLevelView() {
+  visible_levels = parseInt(document.getElementById('level-chooser').value);
+  myDiagram.updateAllTargetBindings();
+}
+
+myDiagram.model = new go.GraphLinksModel([{"key":"Enter a Course :D", "level":0, "catalog":""}],[]);
