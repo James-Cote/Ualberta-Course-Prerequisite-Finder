@@ -100,18 +100,22 @@ button.addEventListener("click", function(){
 button.textContent = "Submit"
 
 
+const secondRowAll = document.createElement("div")
+secondRowAll.setAttribute("style", "position: relative; width: 100%")
+
 const secondRow = document.createElement("div")
-secondRow.setAttribute("style", "position: relative; display: flex; justify-content: center; align-items: center")
+secondRow.setAttribute("style", "display: flex; justify-content: center; align-items: center")
 
 const legend = document.createElement("div")
 legend.setAttribute("class", "theme-color legend")
 legend.textContent = "Tip: Classes connected with the same colour line are equivalent. You can do either one."
 
-secondRow.appendChild(legend)
+secondRowAll.appendChild(legend)
 secondRow.appendChild(userInput)
 secondRow.appendChild(button)
+secondRowAll.appendChild(secondRow)
 
-body.appendChild(secondRow)
+body.appendChild(secondRowAll)
 
 
 //body.appendChild(legend)
