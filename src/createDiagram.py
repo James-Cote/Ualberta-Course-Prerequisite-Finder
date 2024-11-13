@@ -25,11 +25,10 @@ def dumpCourseToJSON(course_list, json_file):
         course_viewed.add(q_course[0])
         
         # Add to Array
-        print("NODE DATA ADDED: ", q_course[0], q_course[1])
-        nodeDataArray.append({"key":q_course[0], "level":q_course[1]})
+        catalog_link = "https://apps.ualberta.ca/catalogue/course/" + q_course[0].replace(" ", "/")
+        nodeDataArray.append({"key":q_course[0], "level":q_course[1], "catalog":catalog_link})
         
         # Get the course
-        print("Q Course:", q_course[0])
         try:
             i_course = course_map[q_course[0]]
         except:
