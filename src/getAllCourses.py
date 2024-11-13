@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from courseClass import Course
 import GetPrereqCorereq
+import json
 
 def getCoursePrefixes(soup):
     course_soup = soup.find_all("a", {"class": "d-block"})
@@ -49,7 +50,11 @@ def getCourseNames(course_list):
 def main():
     soup = getSoup("https://apps.ualberta.ca/catalogue/course")
     course_list = getCoursePrefixes(soup)
-    getCourseNames(course_list)
+    all_courses = getCourseNames(course_list)
+
+    write_file = open("static/js/JSON/allCourses.json", 'w')
+    write_file.write(json.dumps(all_courses))
+    write_file.close()
 
 if __name__ == "__main__":
     main()
