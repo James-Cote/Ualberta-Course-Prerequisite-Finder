@@ -1,3 +1,20 @@
+.banner {
+    width: 100%;
+    height: 100px;
+    background-color: #285D39;
+    box-shadow: 3px 3px 3px #CCCCCC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px
+}
+
+.main-header {
+    color: white;
+    font-size: 48px;
+    font-family: Verdana;
+}
+
 .theme-color {
     background-color: #285D39;
 }
@@ -43,4 +60,26 @@
     top: -10px;
     border-radius: 5px;
     box-shadow: 0px 3px 0px #CCCCCC;
+}
+
+.basic-link a {
+    color: #CCCCFF;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.basic-link a:hover {
+    color: #88AbF5;
+}
+
+.github-link {
+    color: #CCCCFF;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.github-link:hover {
+    color: #88AbF5;
 }
