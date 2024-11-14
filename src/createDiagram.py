@@ -18,15 +18,23 @@ def dumpCourseToJSON(course_list, json_file):
     # Save nodes in cache
     course_viewed = set()
 
+    # Offset for the y position of the node
+    offset_level = set()
+
+    course_catalog_map = {}
+
     for q_course in course_queue:
         # Check the cache
         if (q_course[0] in course_viewed):
+            offset_level.add(q_course[1])
+            nodeDataArray[course_catalog_map[q_course[0]]]["offset"] = 1
             continue
         course_viewed.add(q_course[0])
         
         # Add to Array
         catalog_link = "https://apps.ualberta.ca/catalogue/course/" + q_course[0].replace(" ", "/")
-        nodeDataArray.append({"id":q_course[0], "level":q_course[1], "catalog":catalog_link})
+        nodeDataArray.append({"id":q_course[0], "level":q_course[1], "catalog":catalog_link, "offset": 0})
+        course_catalog_map[q_course[0]] = len(nodeDataArray) - 1
         
         # Get the course
         try:
@@ -50,6 +58,16 @@ def dumpCourseToJSON(course_list, json_file):
                 course_queue.append([j_course, q_course[1] + 1])
             # Next color group (finished this or fucntionality)
             color_i = color_i + 1
+    
+    # Offset balance
+    already_offset = set()
+    offset = 0
+    for course_i in range(len(nodeDataArray)):
+        if (nodeDataArray[course_i]["level"] not in already_offset):
+            if (nodeDataArray[course_i]["level"] in offset_level):
+                offset += 1
+            already_offset.add(nodeDataArray[course_i]["level"])
+        nodeDataArray[course_i]["offset"] += offset
     
     # Write the JSON file
     write_file = open(json_file, 'w')

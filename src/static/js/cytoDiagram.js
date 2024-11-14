@@ -111,22 +111,30 @@ var cy = cytoscape({
                 return getNodeColor(colorIndex); // Call the function to get the color
             },
             'font-family': 'Verdana',
-            'label': 'data(id)',
+            'text-wrap': 'wrap',
+            'label': function (ele) {
+                let label_text = ele.data('id'); // Get the main label (id)
+                if (ele.data('catalog')) {
+                    label_text += '\n\nView Catalog'; // Add space for catalog if catalog data exists
+                }
+                return label_text; // Return the combined label
+            },
             'shape': 'roundrectangle',
             'color': '#fff',
-            'font-size': '12px',
+            'font-size': '16px',
             'text-valign': 'center',
             'text-halign': 'center',
-            'width': 100,
+            'width': 140,
             'height': 'label',
-            'padding': '10px',
+            'padding': '12px',
             "ghost": "yes",
             "ghost-opacity": 0.5,
             "ghost-offset-x": 1,
-            "ghost-offset-y": 1
+            "ghost-offset-y": 1,
+            "corner-radius": 5
         }
-      },
-      {
+    },
+    {
         selector: 'edge',
         style: {
             'width': 3,
@@ -137,9 +145,13 @@ var cy = cytoscape({
             "curve-style": "round-taxi",
             "taxi-direction": "downward",
             "taxi-turn": 20,
-            "taxi-radius": 5
+            "taxi-radius": 5,
+            "ghost": "yes",
+            "ghost-opacity": 0.2,
+            "ghost-offset-x": 1,
+            "ghost-offset-y": 1
         }
-      }
+    }
     ],
   
     layout: {
@@ -152,19 +164,42 @@ var cy = cytoscape({
 
     // Zooming Options
     zoomingEnabled: true, // Allow zooming
-    minZoom: 0.8,         // Minimum zoom level
+    minZoom: 0.5,         // Minimum zoom level
     maxZoom: 3,           // Maximum zoom level
     wheelSensitivity: 0.2, // Controls the zoom speed (higher value = faster zooming)
   });
 
-cy.zoom({ level: 1.5 });
+cy.zoom({ level: 1.3 });
 cy.center();
 
 // Click event to nodes to open a URL when clicked
 cy.on('tap', 'node', function(event) {
-    var node = event.target;
-    var url = node.data('catalog');
+    const node = event.target;
+    const url = node.data('catalog');
     if (url) {
       window.open(url, '_blank'); // Open the link in a new tab
     }
   });
+
+cy.on('mouseover', 'node', function(event) {
+    const node = event.target;
+    if (node.data('catalog')) {
+        const bbox = node.boundingBox();  // Get the bounding box of the node
+        
+        // Get the mouse position relative to the graph container
+        const mousePos = event.originalEvent;
+
+        console.log(mousePos);
+
+        // Check if the mouse is in the bottom half of the node
+        const mouseY = mousePos.clientY; // Mouse Y position relative to the document
+        const nodeBottom = bbox.y2; // Bottom Y position of the node
+        const nodeTop = bbox.y1; // Top Y position of the node
+        const nodeHeight = nodeBottom - nodeTop;
+
+        // Determine if the mouse is hovering over the bottom part of the node (e.g., lower 50%)
+        if (mouseY >= nodeBottom - nodeHeight / 2 && mouseY <= nodeBottom) {
+            console.log('Mouse is over the bottom part of the node');
+        }
+    }
+});

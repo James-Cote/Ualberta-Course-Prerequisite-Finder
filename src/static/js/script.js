@@ -19,8 +19,9 @@ function easeIntoGraph() {
   cy.layout({
       name: 'breadthfirst',
       directed: true,
-      spacingFactor: 0.8,
+      spacingFactor: (700 / document.getElementById('cy').clientWidth) + 0.4,
       avoidOverlap: true,
+      padding: 30,
       grid: false,
       animate: false
   }).run();
@@ -30,28 +31,36 @@ function easeIntoGraph() {
     cy.nodes().forEach(node => {
       const position = node.position();
       // Shift nodes slightly upward to reduce vertical spacing
-      node.position({
-        x: position.x,
-        y: position.y * 0.8  // Decrease to bring nodes closer vertically
-      });
+      if (node.data('offset') >= 0) {
+        node.position({
+          x: position.x,
+          y: (position.y * 0.8) + (node.data('offset') * 120)  // Decrease to bring nodes closer vertically
+        });
+      } else {
+        node.position({
+          x: position.x,
+          y: position.y * 0.6  // Decrease to bring nodes closer vertically
+        });
+      }
     });
   });
 
-  cy.zoom({ level: 1.5 });
+  cy.zoom({ level: 1.3 });
   cy.center();
   cy.panBy({x:0, y: cy.height() / 4});
 
-  // Step 3: Animate pan and zoom back to center for the upward effect
+  // Animate pan and zoom back to center for the upward effect
   cy.animate({
     panBy: { x: 0, y: -cy.height() / 4 }  // Center the graph
   }, {
     duration: 400,
     easing: 'cubic-bezier(.35,.08,.08,1)'
   });
+
+  changeLevelView();
 }
 
 function changeGraph() {
-    const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
     fetch('../static/js/JSON/diagramData.json')
     .then(response => response.json())
     .then(data => {
