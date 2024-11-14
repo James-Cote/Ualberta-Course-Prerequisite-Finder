@@ -19,15 +19,27 @@ function easeIntoGraph() {
   cy.layout({
       name: 'breadthfirst',
       directed: true,
-      spacingFactor: 0.7,
+      spacingFactor: 0.8,
       avoidOverlap: true,
       grid: false,
       animate: false
   }).run();
 
+  // Adjust node positions after the layout for custom vertical spacing
+  cy.batch(() => {
+    cy.nodes().forEach(node => {
+      const position = node.position();
+      // Shift nodes slightly upward to reduce vertical spacing
+      node.position({
+        x: position.x,
+        y: position.y * 0.8  // Decrease to bring nodes closer vertically
+      });
+    });
+  });
+
   cy.zoom({ level: 1.5 });
   cy.center();
-  cy.panBy({x:0, y: cy.height() / 4})
+  cy.panBy({x:0, y: cy.height() / 4});
 
   // Step 3: Animate pan and zoom back to center for the upward effect
   cy.animate({

@@ -217,16 +217,16 @@ myDiagram.linkTemplate =
     );
 
 // Change theme when button is pressed
-function changeTheme() {
-  if (myDiagram) {
-    myDiagram.themeManager.currentTheme = document.getElementById('theme').value;
-  }
-}
+// function changeTheme() {
+//   if (myDiagram) {
+//     myDiagram.themeManager.currentTheme = document.getElementById('theme').value;
+//   }
+// }
 
 // Change the level you see
-function changeLevelView() {
-  visible_levels = parseInt(document.getElementById('level-chooser').value);
-  myDiagram.updateAllTargetBindings();
-}
+// function changeLevelView() {
+//   visible_levels = parseInt(document.getElementById('level-chooser').value);
+//   myDiagram.updateAllTargetBindings();
+// }
 
 myDiagram.model = new go.GraphLinksModel([{"key":"Enter a Course :D", "level":0, "catalog":""}],[]);
