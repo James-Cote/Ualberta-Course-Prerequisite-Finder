@@ -47,12 +47,11 @@
     margin-left: 20px;
     padding: 16px;
     width: 25%;
-    height: 50px;
-    display:flex;
     font-family: Verdana;
     color: white;
     font-size: 14px;
     display:flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: absolute;

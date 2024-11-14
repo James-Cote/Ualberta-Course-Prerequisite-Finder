@@ -55,7 +55,9 @@ function changeGraph() {
       cy.layout({
           name: 'breadthfirst',
           directed: true,
-          spacingFactor: 0.5
+          spacingFactor: 0.7,
+          avoidOverlap: true,
+          grid: false
       }).run();
 
       cy.zoom({ level: 1.5 });
@@ -139,7 +141,13 @@ secondRow.setAttribute("style", "display: flex; justify-content: center; align-i
 
 const legend = document.createElement("div")
 legend.setAttribute("class", "theme-color legend")
-legend.textContent = "Tip: Classes connected with the same colour line are equivalent. You can do either one."
+
+const tip1 = document.createElement("p")
+tip1.textContent = "Tip: You can click on the node to view the catalog and drag to move them."
+const tip2 = document.createElement("p")
+tip2.textContent = "Tip: Classes connected with the same colour line are equivalent; you can do either one."
+legend.appendChild(tip1)
+legend.appendChild(tip2)
 
 secondRowAll.appendChild(legend)
 secondRow.appendChild(userInput)

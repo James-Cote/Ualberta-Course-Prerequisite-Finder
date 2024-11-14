@@ -1,12 +1,27 @@
+//theme functions
+
+edge_colors = [
+    "#DE2332",
+    "#23DE32",
+    "#3223DE",
+    "#32DEDE",
+    "#DE23DE",
+    "#DEDE32"
+]
+
+function getEdgeColor(color) {
+    console.log(color);
+    color = color % 6;
+    return edge_colors[color];
+}
+
 // Initialize Cytoscape
 var cy = cytoscape({
     container: document.getElementById('cy'),  // The HTML element to hold the graph
   
     elements: [
       // List of nodes
-      { data: {"id": "Enter a Course :D", "level": 0, "catalog":""} },
-      { data: {"id": "WHAT", "level": 0, "catalog":""} },
-      { data: {"source":"WHAT", "target":"Enter a Course :D"} }
+      { data: {"id": "Enter a Course :D", "level": 0, "catalog":""} }
 
       // { data: { source: 'node1', target: 'node2' } }
     ],
@@ -16,6 +31,7 @@ var cy = cytoscape({
         selector: 'node',
         style: {
             'background-color': '#285D39',
+            'font-family': 'Verdana',
             'label': 'data(id)',
             'shape': 'roundrectangle',
             'color': '#fff',
@@ -35,12 +51,14 @@ var cy = cytoscape({
         selector: 'edge',
         style: {
             'width': 3,
-            'line-color': '#DE2332',
+            'line-color': function (ele) {
+                const colorIndex = ele.data('line_color'); // Get the color index from edge data
+                return getEdgeColor(colorIndex); // Call the function to get the color
+            },
             "curve-style": "round-taxi",
             "taxi-direction": "downward",
             "taxi-turn": 20,
-            "taxi-turn-min-distance": 5,
-            "taxi-radius": 10
+            "taxi-radius": 5
         }
       }
     ],
@@ -48,7 +66,9 @@ var cy = cytoscape({
     layout: {
         name: 'breadthfirst',
         directed: true,
-        spacingFactor: 0.5
+        spacingFactor: 0.7,
+        avoidOverlap: true,
+        grid: false
     },
 
     // Zooming Options
@@ -60,3 +80,12 @@ var cy = cytoscape({
 
 cy.zoom({ level: 1.5 });
 cy.center();
+
+// Click event to nodes to open a URL when clicked
+cy.on('tap', 'node', function(event) {
+    var node = event.target;
+    var url = node.data('catalog');
+    if (url) {
+      window.open(url, '_blank'); // Open the link in a new tab
+    }
+  });
