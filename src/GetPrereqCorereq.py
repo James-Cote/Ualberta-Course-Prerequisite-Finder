@@ -99,6 +99,7 @@ def course_codes_list(prereq_string):
     prereq_string = prereq_string.replace("and",";")
     prereq_or = prereq_string.split(";") #take our list of prereqs and separate them by the ";"
     coursename_stack = Stack() #have a stack of coursenames renewed for each group of sibling courses
+    # print("prereq_or", prereq_or)
     for siblings_line in prereq_or:
         siblings = []
         siblings_line = siblings_line.split()
@@ -110,9 +111,11 @@ def course_codes_list(prereq_string):
 
             if word.isupper(): #do this--we can't simply say uppercase => course code; some courses are two words, ie "MA PH"
                 if course_name:
-                    course_name += "_"+word
+                    course_name += "_" + word
                 else:
                     course_name += word
+            elif not word.isdigit():
+                course_name = ""
 
             if (word.isdigit()):
                 #  every time we encounter a course code, push to stack. 
@@ -127,16 +130,22 @@ def course_codes_list(prereq_string):
                 except:
                     pass
                 if course_code:
+                    
                     siblings.append(course_code)
             
             if end_flag:
-                if not siblings:
-                    siblings=prereq_string[:end_index]
-                prereq_list.append(siblings)
+                if (len(siblings) != 0):
+                    prereq_list.append(siblings)
+                if (len(prereq_list) == 0):
+                    return None
                 return prereq_list
                 
         if siblings:
+             # print("SIBLING", siblings)
              prereq_list.append(siblings)
+    # print("WHAT", prereq_list)
+    if (len(prereq_list) == 0):
+        return None
     return prereq_list       
         
 
@@ -157,6 +166,7 @@ def prereqs(parent_text):
             coreq_idx=prereq_text_block.index("Corerequisites")
         prereq_text_block=prereq_text_block[:coreq_idx]
     
+    # print("prereq_text_block", prereq_text_block)
     prereq_list= course_codes_list(prereq_text_block)
     return(prereq_list)
               

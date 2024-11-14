@@ -26,7 +26,7 @@ def dumpCourseToJSON(course_list, json_file):
         
         # Add to Array
         catalog_link = "https://apps.ualberta.ca/catalogue/course/" + q_course[0].replace(" ", "/")
-        nodeDataArray.append({"key":q_course[0], "level":q_course[1], "catalog":catalog_link})
+        nodeDataArray.append({"id":q_course[0], "level":q_course[1], "catalog":catalog_link})
         
         # Get the course
         try:
@@ -45,7 +45,7 @@ def dumpCourseToJSON(course_list, json_file):
                 continue
             for j_course in colors:
                 # Add all connections to the link data file
-                linkDataArray.append({"from":i_course.name, "to":j_course, "line_color":color_i})
+                linkDataArray.append({"source":i_course.name, "target":j_course, "line_color":color_i})
                 # Add to the queue
                 course_queue.append([j_course, q_course[1] + 1])
             # Next color group (finished this or fucntionality)

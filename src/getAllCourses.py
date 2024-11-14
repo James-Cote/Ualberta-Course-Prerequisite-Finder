@@ -1,7 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from courseClass import Course
-import GetPrereqCorereq
 import json
 
 def getCoursePrefixes(soup):

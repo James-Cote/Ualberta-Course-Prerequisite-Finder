@@ -22,6 +22,10 @@ def isolateParagraph(soup):
     if len(error) > 0:
         return "ERROR"
 
+    error = soup.find_all("div", {"class": "alert"})
+    if len(error) > 0:
+        return "ERROR"
+
     # soup.find_all returns a list of containers that include different parts of the website
     text = soup.find_all("div", {"class": "container"})
     #elementTag =  text[3].get_text() #container at text[3] contains the paragraph we want

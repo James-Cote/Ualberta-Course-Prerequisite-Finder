@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../static/style.css">
     <!-- use go-debug.js when developing and go.js when deploying -->
     <script src="../static/js/go.js"></script>
+    <script src="../static/js/cytoscape.min.js"></script>
 </head>
 <body>
     <script src="../static/js/script.js"></script>
@@ -32,10 +33,14 @@
         </div>
     </div>
     
-    <div id="myDiagramDiv"
-     style="width: 95%; height: 600px; background-color: #DAE4E4; border-radius: 20px;"></div>
-     <script src="../static/js/network.js"></script>
+    <div id="cy" style="width: 95%; height: 600px; background-color: aquamarine;"></div>
+    <script src="../static/js/cytoDiagram.js"></script>
 
-     <script>body.appendChild(footer)</script>
+    <div id="myDiagramDiv"
+    style="width: 95%; height: 600px; background-color: #DAE4E4; border-radius: 20px;"></div>
+    <script src="../static/js/network.js"></script>
+    
+
+    <script>body.appendChild(footer)</script>
 </body>
 </html>

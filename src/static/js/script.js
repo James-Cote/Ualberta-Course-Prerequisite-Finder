@@ -21,7 +21,9 @@ function changeGraph() {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      console.log(data[0][0]["key"]);
+
+      // NOT FREE STUFF :()
+      // console.log(data[0][0]["key"]);
       if (data[0][0]["key"] == "I") {
         console.log("SAME");
         data[0] = [{key:"Invalid Course ID", level: 0}]
@@ -29,9 +31,38 @@ function changeGraph() {
       myDiagram.model = new go.GraphLinksModel(
         data[0], data[1]
       );
+
+      // Free diagram bby
+      let node_data = data[0];
+      let edge_data = data[1];
+
+      cy.elements().remove();
+
+      let all_elements = [];
+      for (let i = 0; i < node_data.length; i++) {
+        all_elements.push({"data": node_data[i]});
+      }
+
+      for (let i = 0; i < edge_data.length; i++) {
+        all_elements.push({"data": edge_data[i]});
+        // console.log(edge_data[i]);
+      }
+
+      console.log(all_elements);
+    
+      cy.add(all_elements);
+
+      cy.layout({
+          name: 'breadthfirst',
+          directed: true,
+          spacingFactor: 0.5
+      }).run();
+
+      cy.zoom({ level: 1.5 });
+      cy.center();
     })
     .catch(error => console.error('Error loading file:', error));
-  }
+}
 
 function loadingGraph() {
   const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
@@ -175,9 +206,7 @@ and without any specific courses so make sure to click on View Catalog to verify
 `
 about.appendChild(aboutInformation)
 
-
 footer.appendChild(about);
-
 
 // Plug
 
