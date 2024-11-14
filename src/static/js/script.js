@@ -15,22 +15,35 @@ function encodeJSONData(course)
         .catch(error => console.error('Error:', error));
 }
 
+function easeIntoGraph() {
+  cy.layout({
+      name: 'breadthfirst',
+      directed: true,
+      spacingFactor: 0.7,
+      avoidOverlap: true,
+      grid: false,
+      animate: false
+  }).run();
+
+  cy.zoom({ level: 1.5 });
+  cy.center();
+  cy.panBy({x:0, y: cy.height() / 4})
+
+  // Step 3: Animate pan and zoom back to center for the upward effect
+  cy.animate({
+    panBy: { x: 0, y: -cy.height() / 4 }  // Center the graph
+  }, {
+    duration: 400,
+    easing: 'cubic-bezier(.35,.08,.08,1)'
+  });
+}
+
 function changeGraph() {
     const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
     fetch('../static/js/JSON/diagramData.json')
     .then(response => response.json())
     .then(data => {
       console.log(data);
-
-      // NOT FREE STUFF :()
-      // console.log(data[0][0]["key"]);
-      if (data[0][0]["key"] == "I") {
-        console.log("SAME");
-        data[0] = [{key:"Invalid Course ID", level: 0}]
-      }
-      myDiagram.model = new go.GraphLinksModel(
-        data[0], data[1]
-      );
 
       // Free diagram bby
       let node_data = data[0];
@@ -52,28 +65,28 @@ function changeGraph() {
     
       cy.add(all_elements);
 
-      cy.layout({
-          name: 'breadthfirst',
-          directed: true,
-          spacingFactor: 0.7,
-          avoidOverlap: true,
-          grid: false
-      }).run();
-
-      cy.zoom({ level: 1.5 });
-      cy.center();
+      easeIntoGraph();
     })
     .catch(error => console.error('Error loading file:', error));
 }
 
 function loadingGraph() {
-  const myDiagram = go.Diagram.fromDiv('myDiagramDiv');
-  myDiagram.model = new go.GraphLinksModel([{key:"Loading", level:0, catalog:""},{key:"dot.", level:1, catalog:""},{key:"dot..", level:2, catalog:""},{key:"dot...", level:3, catalog:""}], [{from:"Loading", to:"dot."}, {from:"dot.", to:"dot.."}, {from:"dot..", to:"dot..."}]);
+    cy.elements().remove();
+    cy.add([
+      {data: {"id": "Loading", "level": 0, "catalog": ""}},
+      {data: {"id": "dot.", "level": 1, "catalog": ""}},
+      {data: {"id": "dot..", "level": 2, "catalog": ""}},
+      {data: {"id": "dot...", "level": 3, "catalog": ""}},
+      {data: {"source":"Loading", "target":"dot."}},
+      {data: {"source":"dot.", "target":"dot.."}},
+      {data: {"source":"dot..", "target":"dot..."}}
+    ])
+
+    easeIntoGraph();
 }
 
-
 function sendData(course) {
-    console.log(course);
+    console.log("Loading: " + course);
     loadingGraph();
     fetch('/api/data', {
         method: 'POST',
